@@ -1,0 +1,345 @@
+I/flutter (14961): [NearbyProvidersSection] Providers found: 4
+I/flutter (14961): [NearbyProvidersSection] Provider: id=provider1, name=CleanPro Services, location=-1.236762,36.934753, isActive=true
+I/flutter (14961): [NearbyProvidersSection] Provider: id=provider2, name=PlumbMaster, location=-1.236762,36.934753, isActive=true
+I/flutter (14961): [NearbyProvidersSection] Provider: id=provider3, name=ElectroFix, location=-1.236762,36.934753, isActive=true
+I/flutter (14961): [NearbyProvidersSection] Provider: id=provider4, name=PaintPro, location=-1.236762,36.934753, isActive=true
+I/flutter (14961): [NearbyProvidersSection] User location: -1.2365923, 36.9344963
+I/flutter (14961): [NearbyProvidersSection] Providers found: 4
+I/flutter (14961): [NearbyProvidersSection] Provider: id=provider1, name=CleanPro Services, location=-1.236762,36.934753, isActive=true
+I/flutter (14961): [NearbyProvidersSection] Provider: id=provider2, name=PlumbMaster, location=-1.236762,36.934753, isActive=true
+I/flutter (14961): [NearbyProvidersSection] Provider: id=provider3, name=ElectroFix, location=-1.236762,36.934753, isActive=true
+I/flutter (14961): [NearbyProvidersSection] Provider: id=provider4, name=PaintPro, location=-1.236762,36.934753, isActive=true
+I/ScrollIdentify(14961): on fling
+D/ViewRootImplExtImpl(14961): the up motion event handled by client, just return
+D/ViewRootImplExtImpl(14961): the up motion event handled by client, just return
+I/ImeTracker(14961): com.example.poafix:a6897e20: onRequestShow at ORIGIN_CLIENT reason SHOW_SOFT_INPUT fromUser false
+D/InputMethodManager(14961): showSoftInput() view=io.flutter.embedding.android.FlutterView{261c7b2 VFE...... .F....ID 0,0-720,1612 #1 aid=1073741824 alpha=1.0 viewInfo = } flags=0 reason=SHOW_SOFT_INPUT
+D/ViewExtract(14961): [OplusViewExtractManager] OplusViewExtractManager init com.example.poafix
+I/AssistStructure(14961): Flattened final assist data: 1084 bytes, containing 1 windows, 3 views
+D/InputConnectionAdaptor(14961): The input method toggled cursor monitoring on
+D/callGcSupression(14961): java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.Object java.lang.reflect.Method.invoke(java.lang.Object, java.lang.Object[])' on a null object reference
+W/VRI[MainActivity](14961): handleResized abandoned!
+D/callGcSupression(14961): java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.Object java.lang.reflect.Method.invoke(java.lang.Object, java.lang.Object[])' on a null object reference
+W/VRI[MainActivity](14961): handleResized abandoned!
+D/InsetsController(14961): show(ime(), fromIme=true)
+W/InteractionJankMonitor(14961): Initializing without READ_DEVICE_CONFIG permission. enabled=false, interval=1, missedFrameThreshold=3, frameTimeThreshold=64, package=com.example.poafix
+D/callGcSupression(14961): java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.Object java.lang.reflect.Method.invoke(java.lang.Object, java.lang.Object[])' on a null object reference
+W/VRI[MainActivity](14961): handleResized abandoned!
+I/Quality (14961): local:ime_anim_jank,pkgName:com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME,flag:2,jankCount:2,jankCountLocal:3,preCount:1
+I/Quality (14961): ime_anim_jank:2,49007469,1
+I/ImeTracker(14961): com.example.poafix:a6897e20: onShown
+D/InputConnectionAdaptor(14961): The input method toggled cursor monitoring off
+D/InsetsController(14961): hide(ime(), fromIme=true)
+D/callGcSupression(14961): java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.Object java.lang.reflect.Method.invoke(java.lang.Object, java.lang.Object[])' on a null object reference
+W/VRI[MainActivity](14961): handleResized abandoned!
+I/Quality (14961): local:ime_anim_jank,pkgName:com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME,flag:2,jankCount:2,jankCountLocal:4,preCount:1
+I/Quality (14961): ime_anim_jank:2,49007934,1
+I/ImeTracker(14961): com.example.poafix:53965fb2: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT_ON_ANIMATION_STATE_CHANGED fromUser false
+I/ImeTracker(14961): com.google.android.inputmethod.latin:202f36f6: onHidden
+D/callGcSupression(14961): java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.Object java.lang.reflect.Method.invoke(java.lang.Object, java.lang.Object[])' on a null object reference
+W/VRI[MainActivity](14961): handleResized abandoned!
+D/callGcSupression(14961): java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.Object java.lang.reflect.Method.invoke(java.lang.Object, java.lang.Object[])' on a null object reference
+W/VRI[MainActivity](14961): handleResized abandoned!
+I/ScrollIdentify(14961): on fling
+D/ViewRootImplExtImpl(14961): the up motion event handled by client, just return
+D/ViewRootImplExtImpl(14961): the up motion event handled by client, just return
+I/flutter (14961): [Booking] Navigating to payment methods:
+I/flutter (14961):   • Amount: 120.0
+I/flutter (14961):   • Service ID: 1
+I/flutter (14961): [NearbyProvidersSection] User location: -1.2365923, 36.9344963
+I/flutter (14961): [NearbyProvidersSection] Providers found: 4
+I/flutter (14961): [NearbyProvidersSection] Provider: id=provider1, name=CleanPro Services, location=-1.236762,36.934753, isActive=true
+I/flutter (14961): [NearbyProvidersSection] Provider: id=provider2, name=PlumbMaster, location=-1.236762,36.934753, isActive=true
+I/flutter (14961): [NearbyProvidersSection] Provider: id=provider3, name=ElectroFix, location=-1.236762,36.934753, isActive=true
+I/flutter (14961): [NearbyProvidersSection] Provider: id=provider4, name=PaintPro, location=-1.236762,36.934753, isActive=true
+W/WindowOnBackDispatcher(14961): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher(14961): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+I/ImeTracker(14961): com.example.poafix:3349a1fc: onRequestHide at ORIGIN_CLIENT reason HIDE_SOFT_INPUT fromUser false
+I/flutter (14961): [NearbyProvidersSection] User location: -1.2365923, 36.9344963
+I/flutter (14961): [NearbyProvidersSection] Providers found: 4
+I/flutter (14961): [NearbyProvidersSection] Provider: id=provider1, name=CleanPro Services, location=-1.236762,36.934753, isActive=true
+I/flutter (14961): [NearbyProvidersSection] Provider: id=provider2, name=PlumbMaster, location=-1.236762,36.934753, isActive=true
+I/flutter (14961): [NearbyProvidersSection] Provider: id=provider3, name=ElectroFix, location=-1.236762,36.934753, isActive=true
+I/flutter (14961): [NearbyProvidersSection] Provider: id=provider4, name=PaintPro, location=-1.236762,36.934753, isActive=true
+I/flutter (14961): [NearbyProvidersSection] User location: -1.2365923, 36.9344963
+I/flutter (14961): [NearbyProvidersSection] Providers found: 4
+I/flutter (14961): [NearbyProvidersSection] Provider: id=provider1, name=CleanPro Services, location=-1.236762,36.934753, isActive=true
+I/flutter (14961): [NearbyProvidersSection] Provider: id=provider2, name=PlumbMaster, location=-1.236762,36.934753, isActive=true
+I/flutter (14961): [NearbyProvidersSection] Provider: id=provider3, name=ElectroFix, location=-1.236762,36.934753, isActive=true
+I/flutter (14961): [NearbyProvidersSection] Provider: id=provider4, name=PaintPro, location=-1.236762,36.934753, isActive=true
+D/ViewRootImplExtImpl(14961): the up motion event handled by client, just return
+I/flutter (14961): 
+I/flutter (14961): [Payment] 🔵 Starting PayPal Payment Flow
+I/flutter (14961): [Payment] 📝 Parameters:
+I/flutter (14961):   • Amount: 120.0 (double)
+I/flutter (14961):   • Service ID: 1
+I/flutter (14961):   • User ID: vkmcA4e8I6SxY6dpbbYbdHqaDi72
+I/flutter (14961): [Payment] ✅ Parameter validation passed
+I/flutter (14961): [Payment] 🔄 Initializing PayPal payment...
+I/flutter (14961): 
+I/flutter (14961): [PayPal] 🔵 Payment Flow Started
+I/flutter (14961): [PayPal] 📝 Input Parameters:
+I/flutter (14961):   • Amount: 120.0 (double)
+I/flutter (14961):   • Currency: USD
+I/flutter (14961):   • Service ID: 1
+I/flutter (14961):   • User Data: {userId: vkmcA4e8I6SxY6dpbbYbdHqaDi72, provider: paypal, description: Payment for service 1, amount: 120.00, context: PaymentMethodsScreen(dirty, state: _PaymentMethodsScreenState#5372e)}
+I/flutter (14961): [PayPal] ✅ Input validation passed
+I/flutter (14961): [PayPal] Getting access token...
+I/flutter (14961): [PayPal] _getAccessToken called
+I/flutter (14961): [PayPal] Requesting access token
+I/flutter (14961): [PayPal] _getAccessToken response: status=200, body={"scope":"https://uri.paypal.com/services/customer/partner-referrals/readwrite https://uri.paypal.com/services/payments/partnerfee https://uri.paypal.com/services/invoicing https://uri.paypal.com/services/checkout/one-click-with-merchant-issued-token https://uri.paypal.com/services/payments/futurepayments https://uri.paypal.com/services/vault/payment-tokens/read https://uri.paypal.com/services/disputes/read-buyer https://uri.paypal.com/services/payments/realtimepayment https://uri.paypal.com/services/subscriptions/confirm-payment https://uri.paypal.com/services/payments/client-payments-eligibility https://uri.paypal.com/services/customer/onboarding/user https://api.paypal.com/v1/vault/credit-card https://api.paypal.com/v1/payments/.* https://uri.paypal.com/services/payments/referenced-payouts-items/readwrite https://uri.paypal.com/services/reporting/search/read https://uri.paypal.com/services/customer/partner https://uri.paypal.com/services/vault/payment-to
+I/flutter (14961): [PayPal] Access token received
+I/flutter (14961): [PayPal] Creating PayPal order...
+I/flutter (14961): [PayPal] _createOrder called with: amount=120.0, currency=USD, serviceId=1, metadata={userId: vkmcA4e8I6SxY6dpbbYbdHqaDi72, provider: paypal, description: Payment for service 1, amount: 120.00, context: PaymentMethodsScreen(state: _PaymentMethodsScreenState#5372e)}
+I/flutter (14961): 
+I/flutter (14961): [PayPal] 📤 Sending order request to PayPal:
+I/flutter (14961): {
+I/flutter (14961):   "intent": "CAPTURE",
+I/flutter (14961):   "purchase_units": [
+I/flutter (14961):     {
+I/flutter (14961):       "amount": {
+I/flutter (14961):         "currency_code": "USD",
+I/flutter (14961):         "value": "120.00"
+I/flutter (14961):       },
+I/flutter (14961):       "custom_id": "1",
+I/flutter (14961):       "description": "Payment for service 1"
+I/flutter (14961):     }
+I/flutter (14961):   ],
+I/flutter (14961):   "application_context": {
+I/flutter (14961):     "return_url": "https://success.poafix.com",
+I/flutter (14961):     "cancel_url": "https://cancel.poafix.com",
+I/flutter (14961):     "brand_name": "PoaFix Home Services",
+I/flutter (14961):     "landing_page": "LOGIN",
+I/flutter (14961):     "user_action": "PAY_NOW"
+I/flutter (14961):   }
+I/flutter (14961): }
+I/flutter (14961): [PayPal] _createOrder response: status=201, body={"id":"3GU193619R739102N","status":"CREATED","links":[{"href":"https://api.sandbox.paypal.com/v2/checkout/orders/3GU193619R739102N","rel":"self","method":"GET"},{"href":"https://www.sandbox.paypal.com/checkoutnow?token=3GU193619R739102N","rel":"approve","method":"GET"},{"href":"https://api.sandbox.paypal.com/v2/checkout/orders/3GU193619R739102N","rel":"update","method":"PATCH"},{"href":"https://api.sandbox.paypal.com/v2/checkout/orders/3GU193619R739102N/capture","rel":"capture","method":"POST"}]}
+I/flutter (14961): [PayPal] _createOrder success: {id: 3GU193619R739102N, status: CREATED, links: [{href: https://api.sandbox.paypal.com/v2/checkout/orders/3GU193619R739102N, rel: self, method: GET}, {href: https://www.sandbox.paypal.com/checkoutnow?token=3GU193619R739102N, rel: approve, method: GET}, {href: https://api.sandbox.paypal.com/v2/checkout/orders/3GU193619R739102N, rel: update, method: PATCH}, {href: https://api.sandbox.paypal.com/v2/checkout/orders/3GU193619R739102N/capture, rel: capture, method: POST}]}
+I/flutter (14961): [PayPal] Order created: {orderId: 3GU193619R739102N, approvalUrl: https://www.sandbox.paypal.com/checkoutnow?token=3GU193619R739102N}
+I/flutter (14961): 
+I/flutter (14961): [PayPal] 🌐 Opening WebView Checkout
+I/flutter (14961): [PayPal] • Initial URL: https://www.sandbox.paypal.com/checkoutnow?token=3GU193619R739102N
+I/WebViewFactory(14961): Loading com.google.android.webview version 139.0.7258.160 (code 725816033)
+W/.example.poafix(14961): Failed to find entry 'classes.dex': Entry not found
+D/nativeloader(14961): Configuring clns-11 for other apk /data/app/~~8LNOIRevsvDWZk_dv6vs_Q==/com.google.android.trichromelibrary_725816033-xLxZI0ZPB55o5pGe6SSZJQ==/base.apk. target_sdk_version=35, uses_libraries=ALL, library_path=/data/app/~~v2JFmCH8cjN3PJjOY5iAnw==/com.google.android.webview-3I2ZqxMSA7ROPFuKn5ZEig==/lib/arm64:/data/app/~~v2JFmCH8cjN3PJjOY5iAnw==/com.google.android.webview-3I2ZqxMSA7ROPFuKn5ZEig==/base.apk!/lib/arm64-v8a:/data/app/~~8LNOIRevsvDWZk_dv6vs_Q==/com.google.android.trichromelibrary_725816033-xLxZI0ZPB55o5pGe6SSZJQ==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+D/nativeloader(14961): Extending system_exposed_libraries: libapuwareapusys.mtk.so:libapuwareapusys_v2.mtk.so:libapuwarexrp.mtk.so:libapuwarexrp_v2.mtk.so:libapuwareutils.mtk.so:libapuwareutils_v2.mtk.so:libapuwarehmp.mtk.so:libneuron_graph_delegate.mtk.so:libneuronusdk_adapter.mtk.so:libtflite_mtk.mtk.so:libarmnn_ndk.mtk.so:libcmdl_ndk.mtk.so:libnir_neon_driver_ndk.mtk.so:libmvpu_runtime.mtk.so:libmvpu_runtime_pub.mtk.so:libmvpu_engine_pub.mtk.so:libmvpu_pattern_pub.mtk.so:libmvpuop_mtk_cv.mtk.so:libmvpuop_mtk_nn.mtk.so:libmvpu_runtime_25.mtk.so:libmvpu_runtime_25_pub.mtk.so:libmvpu_engine_25_pub.mtk.so:libmvpu_pattern_25_pub.mtk.so:libmvpuop25_mtk_cv.mtk.so:libmvpuop25_mtk_nn.mtk.so:libaol_jni.oplus.so:libbleoffload_jni.oplus.so:libSloganJni.oplus.so:libsuperNight.oplus.so:libAPSClient-cmd-jni-extension.oplus.so:libsatellite_audio_jni.oplus.so:libortc_so.oplus.so:libsoundtouch.oplus.so:libsoundtouch_jni.oplus.so:libOplusStringJNI-extension.oplus.so:libapssuspend-jni.oplus.so
+D/ApplicationLoaders(14961): Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+W/.example.poafix(14961): Loading /data/app/~~v2JFmCH8cjN3PJjOY5iAnw==/com.google.android.webview-3I2ZqxMSA7ROPFuKn5ZEig==/oat/arm64/base.odex non-executable as it requires an image which we failed to load
+D/nativeloader(14961): Configuring clns-12 for other apk /data/app/~~v2JFmCH8cjN3PJjOY5iAnw==/com.google.android.webview-3I2ZqxMSA7ROPFuKn5ZEig==/base.apk. target_sdk_version=35, uses_libraries=, library_path=/data/app/~~v2JFmCH8cjN3PJjOY5iAnw==/com.google.android.webview-3I2ZqxMSA7ROPFuKn5ZEig==/lib/arm64:/data/app/~~v2JFmCH8cjN3PJjOY5iAnw==/com.google.android.webview-3I2ZqxMSA7ROPFuKn5ZEig==/base.apk!/lib/arm64-v8a:/data/app/~~8LNOIRevsvDWZk_dv6vs_Q==/com.google.android.trichromelibrary_725816033-xLxZI0ZPB55o5pGe6SSZJQ==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand
+I/cr_WVCFactoryProvider(14961): version=139.0.7258.160 (725816033) minSdkVersion=29 multiprocess=true packageId=2 splits=<none>
+D/nativeloader(14961): Load /data/app/~~8LNOIRevsvDWZk_dv6vs_Q==/com.google.android.trichromelibrary_725816033-xLxZI0ZPB55o5pGe6SSZJQ==/base.apk!/lib/arm64-v8a/libmonochrome_64.so using class loader ns clns-12 (caller=/data/app/~~v2JFmCH8cjN3PJjOY5iAnw==/com.google.android.webview-3I2ZqxMSA7ROPFuKn5ZEig==/base.apk): ok
+D/nativeloader(14961): Load /system/lib64/libwebviewchromium_plat_support.so using class loader ns clns-12 (caller=/data/app/~~v2JFmCH8cjN3PJjOY5iAnw==/com.google.android.webview-3I2ZqxMSA7ROPFuKn5ZEig==/base.apk): ok
+I/chromium(14961): [0915/090705.924582:INFO:android_webview/browser/variations/variations_seed_loader.cc:67] Failed to open file for reading.: No such file or directory (2)
+I/cr_LibraryLoader(14961): Successfully loaded native library
+I/cr_CachingUmaRecorder(14961): Flushed 13 samples from 13 histograms, 0 samples were dropped.
+I/cr_CombinedPProvider(14961): #registerProvider() provider:WV.t9@cca825e isPolicyCacheEnabled:false policyProvidersSize:0
+I/cr_PolicyProvider(14961): #setManagerAndSource() 0
+I/.example.poafix(14961): Background concurrent mark compact GC freed 6302KB AllocSpace bytes, 7(204KB) LOS objects, 49% free, 7545KB/14MB, paused 805us,5.144ms total 137.574ms
+W/.example.poafix(14961): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~VZky4pyhA7gL0pGsxQJOKw==/cn.wps.moffice_eng-7hxjbmT9_1miP87RKc6rRw==/base.apk' with 1 weak references
+W/.example.poafix(14961): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~VZky4pyhA7gL0pGsxQJOKw==/cn.wps.moffice_eng-7hxjbmT9_1miP87RKc6rRw==/split_config.arm64_v8a.apk' with 1 weak references
+W/.example.poafix(14961): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~VZky4pyhA7gL0pGsxQJOKw==/cn.wps.moffice_eng-7hxjbmT9_1miP87RKc6rRw==/split_config.en.apk' with 1 weak references
+W/.example.poafix(14961): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~VZky4pyhA7gL0pGsxQJOKw==/cn.wps.moffice_eng-7hxjbmT9_1miP87RKc6rRw==/split_config.xhdpi.apk' with 1 weak references
+W/.example.poafix(14961): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~VZky4pyhA7gL0pGsxQJOKw==/cn.wps.moffice_eng-7hxjbmT9_1miP87RKc6rRw==/split_vassonic.apk' with 1 weak references
+W/.example.poafix(14961): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~VZky4pyhA7gL0pGsxQJOKw==/cn.wps.moffice_eng-7hxjbmT9_1miP87RKc6rRw==/split_vassonic.config.xhdpi.apk' with 1 weak references
+W/.example.poafix(14961): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~vRms6Quo5SCgs2UcZ_e7Yw==/com.openai.chatgpt-m2oY3jKs8lXaReOs-Pqlzg==/base.apk' with 1 weak references
+W/.example.poafix(14961): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~vRms6Quo5SCgs2UcZ_e7Yw==/com.openai.chatgpt-m2oY3jKs8lXaReOs-Pqlzg==/split_config.arm64_v8a.apk' with 1 weak references
+W/.example.poafix(14961): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~vRms6Quo5SCgs2UcZ_e7Yw==/com.openai.chatgpt-m2oY3jKs8lXaReOs-Pqlzg==/split_config.en.apk' with 1 weak references
+W/.example.poafix(14961): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~vRms6Quo5SCgs2UcZ_e7Yw==/com.openai.chatgpt-m2oY3jKs8lXaReOs-Pqlzg==/split_config.xhdpi.apk' with 1 weak references
+W/.example.poafix(14961): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~sOl6a4aLCEXetT0fT8bjJg==/com.google.android.marvin.talkback-9WsSmdxOYpXCl7RIHt61hQ==/base.apk' with 1 weak references
+W/.example.poafix(14961): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~sOl6a4aLCEXetT0fT8bjJg==/com.google.android.marvin.talkback-9WsSmdxOYpXCl7RIHt61hQ==/split_config.arm64_v8a.apk' with 1 weak references
+W/.example.poafix(14961): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/OppoNote2/com.coloros.note_154050006.apk' with 1 weak references
+W/.example.poafix(14961): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~v2JFmCH8cjN3PJjOY5iAnw==/com.google.android.webview-3I2ZqxMSA7ROPFuKn5ZEig==/base.apk' with 1 weak references
+I/cr_CombinedPProvider(14961): #linkNativeInternal() 1
+I/cr_AppResProvider(14961): #getApplicationRestrictionsFromUserManager() Bundle[EMPTY_PARCEL]
+I/cr_PolicyProvider(14961): #notifySettingsAvailable() 0
+I/cr_CombinedPProvider(14961): #onSettingsAvailable() 0
+I/cr_CombinedPProvider(14961): #flushPolicies()
+W/chromium(14961): [WARNING:android_webview/browser/network_service/net_helpers.cc:143] HTTP Cache size is: 20971520
+I/CameraManagerExtImpl(14961): packagename is com.example.poafix
+I/OplusCameraManager(14961): saveOpPackageName, mOpPackageName: com.example.poafix
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): Connecting to camera service
+I/CameraManagerGlobal(14961): Connecting to camera service
+W/cr_media(14961): BLUETOOTH_CONNECT permission is missing.
+W/cr_media(14961): getBluetoothAdapter() requires BLUETOOTH permission
+W/cr_media(14961): registerBluetoothIntentsIfNeeded: Requires BLUETOOTH permission
+D/libMEOW (14961): meow new tls: 0xb400007a69c10100
+D/libMEOW (14961): applied 1 plugins for [com.example.poafix]:
+D/libMEOW (14961):   plugin 1: [libMEOW_gift.so]:
+I/PlatformViewsController(14961): Hosting view in view hierarchy for platform view: 0
+I/PlatformViewsController(14961): PlatformView is using SurfaceProducer backend
+D/BufferQueueConsumer(14961): [](id:3a7100000003,api:0,p:-1,c:14961) connect: controlledByApp=true
+D/skia    (14961): setRusSupported enable 0
+D/vulkan  (14961): searching for layers in '/data/app/~~6BvATVjxJM5lMshLbshbGw==/com.example.poafix-tBXH4e9YgleWzVoxVxFhhA==/lib/arm64'
+D/BufferQueueConsumer(14961): [](id:3a7100000004,api:0,p:-1,c:14961) connect: controlledByApp=true
+D/skia    (14961): setRusSupported enable 0
+D/vulkan  (14961): searching for layers in '/data/app/~~6BvATVjxJM5lMshLbshbGw==/com.example.poafix-tBXH4e9YgleWzVoxVxFhhA==/base.apk!/lib/arm64-v8a'
+D/colorx  (14961): I can't find colorx layer , let's enumerate colorx layers first.
+I/.example.poafix(14961): hiddenapi: Accessing hidden field Landroid/content/pm/ApplicationInfo;->primaryCpuAbi:Ljava/lang/String; (runtime_flags=0, domain=platform, api=unsupported) from Lorg/chromium/android_webview/SystemStateUtil; (domain=app) using reflection: allowed
+W/VideoCapabilities(14961): Unrecognized profile/level 32768/256 for video/mp4v-es
+W/VideoCapabilities(14961): Unrecognized profile/level 32768/256 for video/mp4v-es
+D/HWUI    (14961): RenderProxy::destroy: this=0xb400007a6b01dd00, mContext=0xb400007a4ed73ec0
+D/HWUI    (14961): SkiaOpenGLPipeline::setSurface: this=0xb400007bd289f0c0, surface=NULL
+D/BufferQueueConsumer(14961): [ImageReader-1x1f22m6-14961-0](id:3a7100000003,api:0,p:-1,c:14961) disconnect
+I/chromium(14961): [INFO:CONSOLE:9] "[object Object]", source: https://www.sandbox.paypal.com/checkoutnow?token=3GU193619R739102N (9)
+I/chromium(14961): [INFO:CONSOLE:0] "A preload for 'https://www.paypalobjects.com/pa/js/min/pa.js' is found, but is not used because the request credentials mode does not match. Consider taking a look at crossorigin attribute.", source: https://www.sandbox.paypal.com/checkoutnow?token=3GU193619R739102N (0)
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+I/chromium(14961): [INFO:CONSOLE:71] "Refused to evaluate a string as JavaScript because 'unsafe-eval' is not an allowed source of script in the following Content Security Policy directive: "script-src 'nonce-zK7layRvYqLGmd0aPxD4u14wXXzSI7etvYIdmz8Yl1XkVm2b' 'self' https://*.paypal.com https://*.paypal.cn https://*.paypalobjects.com https://objects.paypal.cn https://www.gstatic.com https://*.synchronycredit.com https://synchronycredit.com 'unsafe-inline' https://www.datadoghq-browser-agent.com".
+I/chromium(14961): ", source: https://www.sandbox.paypal.com/checkoutnow?token=3GU193619R739102N (71)
+I/chromium(14961): [INFO:CONSOLE:71] "Refused to evaluate a string as JavaScript because 'unsafe-eval' is not an allowed source of script in the following Content Security Policy directive: "script-src 'nonce-zK7layRvYqLGmd0aPxD4u14wXXzSI7etvYIdmz8Yl1XkVm2b' 'self' https://*.paypal.com https://*.paypal.cn https://*.paypalobjects.com https://objects.paypal.cn https://www.gstatic.com https://*.synchronycredit.com https://synchronycredit.com 'unsafe-inline' https://www.datadoghq-browser-agent.com".
+I/chromium(14961): ", source: https://www.sandbox.paypal.com/checkoutnow?token=3GU193619R739102N (71)
+I/chromium(14961): [INFO:CONSOLE:1] "Datadog Browser SDK: service value doesn't meet tag requirements and will be sanitized. More details: https://docs.datadoghq.com/getting_started/tagging/#defining-tags", source: https://www.datadoghq-browser-agent.com/us5/v5/datadog-rum.js (1)
+I/chromium(14961): [INFO:CONSOLE:1] "A preload for 'https://c.paypal.com/da/r/fb_fp.js' is found, but is not used because the request credentials mode does not match. Consider taking a look at crossorigin attribute.", source: https://www.paypalobjects.com/checkoutweb/release/dumbledore/js/main.2ad4c2ee.js (1)
+I/chromium(14961): [INFO:CONSOLE:1] "serverGqlData [object Object]", source: https://www.paypalobjects.com/checkoutweb/release/dumbledore/js/main.2ad4c2ee.js (1)
+I/Choreographer(14961): Skipped 42 frames!  The application may be doing too much work on its main thread.
+I/HWUI    (14961): Davey! duration=706ms; Flags=0, FrameTimelineVsyncId=38062232, IntendedVsync=196940063439026, Vsync=196940749541450, InputEventId=0, HandleInputStart=196940762334584, AnimationStart=196940762338661, PerformTraversalsStart=196940764119892, DrawStart=196940764250046, FrameDeadline=196940769515226, FrameInterval=196940761187892, FrameStartTime=16335176, SyncQueued=196940766384738, SyncStart=196940774600200, IssueDrawCommandsStart=196940774735507, SwapBuffers=196940776560123, FrameCompleted=196940778292200, DequeueBufferDuration=66769, QueueBufferDuration=670693, GpuCompleted=196940778292200, SwapBuffersCompleted=196940778121661, DisplayPresentTime=0, CommandSubmissionCompleted=196940776560123, 
+I/chromium(14961): [INFO:CONSOLE:1] "A preload for 'https://www.paypalobjects.com/checkoutweb/release/dumbledore/css/@/components/BillingAgreement.fc74364a.css' is found, but is not used because the request credentials mode does not match. Consider taking a look at crossorigin attribute.", source: https://www.paypalobjects.com/checkoutweb/release/dumbledore/js/runtime-main.ccd35a5e.js (1)
+I/chromium(14961): [INFO:CONSOLE:1] "A preload for 'https://www.paypalobjects.com/checkoutweb/release/dumbledore/css/@/components/CancelLink.e1a0e5fa.css' is found, but is not used because the request credentials mode does not match. Consider taking a look at crossorigin attribute.", source: https://www.paypalobjects.com/checkoutweb/release/dumbledore/js/runtime-main.ccd35a5e.js (1)
+I/chromium(14961): [INFO:CONSOLE:1] "A preload for 'https://www.paypalobjects.com/checkoutweb/release/dumbledore/css/Interstitials.250b4496.css' is found, but is not used because the request credentials mode does not match. Consider taking a look at crossorigin attribute.", source: https://www.paypalobjects.com/checkoutweb/release/dumbledore/js/runtime-main.ccd35a5e.js (1)
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+I/chromium(14961): [INFO:CONSOLE:1] "A preload for 'https://www.paypalobjects.com/checkoutweb/release/dumbledore/css/HeaderWithProfilePhoto.4dd51d00.css' is found, but is not used because the request credentials mode does not match. Consider taking a look at crossorigin attribute.", source: https://www.paypalobjects.com/checkoutweb/release/dumbledore/js/runtime-main.ccd35a5e.js (1)
+I/chromium(14961): [INFO:CONSOLE:1] "A preload for 'https://www.paypalobjects.com/checkoutweb/release/dumbledore/css/CreditNSFAlert.c40c78a9.css' is found, but is not used because the request credentials mode does not match. Consider taking a look at crossorigin attribute.", source: https://www.paypalobjects.com/checkoutweb/release/dumbledore/js/runtime-main.ccd35a5e.js (1)
+I/chromium(14961): [INFO:CONSOLE:1] "A preload for 'https://www.paypalobjects.com/checkoutweb/release/dumbledore/css/@/components/Rewards/PayWithRewards.940cd235.css' is found, but is not used because the request credentials mode does not match. Consider taking a look at crossorigin attribute.", source: https://www.paypalobjects.com/checkoutweb/release/dumbledore/js/runtime-main.ccd35a5e.js (1)
+I/chromium(14961): [INFO:CONSOLE:1] "A preload for 'https://www.paypalobjects.com/checkoutweb/release/dumbledore/css/@/components/Installments/PayInInstallments.f7798d38.css' is found, but is not used because the request credentials mode does not match. Consider taking a look at crossorigin attribute.", source: https://www.paypalobjects.com/checkoutweb/release/dumbledore/js/runtime-main.ccd35a5e.js (1)
+I/chromium(14961): [INFO:CONSOLE:1] "A preload for 'https://www.paypalobjects.com/checkoutweb/release/dumbledore/css/@/components/PayPalRewards/AffiliateTag/AffiliateTagImg.1dd6f4b4.css' is found, but is not used because the request credentials mode does not match. Consider taking a look at crossorigin attribute.", source: https://www.paypalobjects.com/checkoutweb/release/dumbledore/js/runtime-main.ccd35a5e.js (1)
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+I/chromium(14961): [INFO:CONSOLE:0] "Access to XMLHttpRequest at 'https://c.paypal.com/v1/r/d/b/w' from origin 'https://www.sandbox.paypal.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: The 'Access-Control-Allow-Origin' header has a value 'https://www.paypal.com' that is not equal to the supplied origin.", source: https://www.sandbox.paypal.com/checkoutnow?token=3GU193619R739102N (0)
+I/chromium(14961): [INFO:CONSOLE:0] "Access to XMLHttpRequest at 'https://c.paypal.com/v1/r/d/b/p1' from origin 'https://www.sandbox.paypal.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: The 'Access-Control-Allow-Origin' header has a value 'https://www.paypal.com' that is not equal to the supplied origin.", source: https://www.sandbox.paypal.com/checkoutnow?token=3GU193619R739102N (0)
+I/chromium(14961): [INFO:CONSOLE:0] "Access to XMLHttpRequest at 'https://c.paypal.com/v1/r/d/b/p2' from origin 'https://www.sandbox.paypal.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: The 'Access-Control-Allow-Origin' header has a value 'https://www.paypal.com' that is not equal to the supplied origin.", source: https://www.sandbox.paypal.com/checkoutnow?token=3GU193619R739102N (0)
+W/cr_media(14961): Requires MODIFY_AUDIO_SETTINGS and RECORD_AUDIO. No audio device will be available for recording
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+I/OplusCameraManagerGlobal(14961): setClientInfo, packageName: com.example.poafix, uid: 10430, pid: 14961
+D/ViewRootImplExtImpl(14961): the up motion event handled by client, just return
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+E/GPUAUX  (14961): [AUX]GuiExtAuxCheckAuxPath:688: Null anb
+I/flutter (14961): 
+I/flutter (14961): [PayPal] 🔄 WebView Navigation
+I/flutter (14961): [PayPal] • Navigating to: https://success.poafix.com/?token=3GU193619R739102N&PayerID=WC7NTAL4666ZL
+I/flutter (14961): [PayPal] ✅ Payment Approved
+I/flutter (14961): [PayPal] Checkout completed: success=true
+I/flutter (14961): [PayPal] Capturing payment for orderId=3GU193619R739102N
+I/flutter (14961): 
+I/flutter (14961): [PayPal] 💳 Capturing Payment
+I/flutter (14961): [PayPal] • Order ID: 3GU193619R739102N
+I/flutter (14961): [PayPal] • Using Access Token: A21AAKFOLl...
+D/HWUI    (14961): RenderProxy::destroy: this=0xb400007a68a99300, mContext=0xb400007a8d8f10c0
+D/HWUI    (14961): SkiaOpenGLPipeline::setSurface: this=0xb400007b40748940, surface=NULL
+D/BufferQueueConsumer(14961): [ImageReader-560x1128f22m6-14961-1](id:3a7100000004,api:0,p:-1,c:14961) disconnect
+I/GED     (14961): ged_boost_gpu_freq, level 100, eOrigin 2, final_idx 31, oppidx_max 31, oppidx_min 0
+I/GED     (14961): ged_boost_gpu_freq, level 100, eOrigin 2, final_idx 31, oppidx_max 31, oppidx_min 0
+I/chromium(14961): [INFO:CONSOLE:0] "Access to XMLHttpRequest at 'https://c.paypal.com/v1/r/d/b/w' from origin 'https://www.sandbox.paypal.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: The 'Access-Control-Allow-Origin' header has a value 'https://www.paypal.com' that is not equal to the supplied origin.", source: https://www.sandbox.paypal.com/checkoutnow?token=3GU193619R739102N (0)
+I/flutter (14961): 
+I/flutter (14961): [PayPal] 📥 Capture Response:
+I/flutter (14961): [PayPal] • Status Code: 201
+I/flutter (14961): [PayPal] • Response Body: {"id":"3GU193619R739102N","status":"COMPLETED","payment_source":{"paypal":{"email_address":"sb-t5anz42281618@personal.example.com","account_id":"WC7NTAL4666ZL","account_status":"VERIFIED","name":{"given_name":"John","surname":"Doe"},"address":{"country_code":"KE"}}},"purchase_units":[{"reference_id":"default","shipping":{"name":{"full_name":"John Doe"},"address":{"address_line_1":"Free Trade Zone","admin_area_2":"Nairobi","admin_area_1":"CA","postal_code":"00521","country_code":"KE"}},"payments":{"captures":[{"id":"7LE22781FP6418418","status":"COMPLETED","amount":{"currency_code":"USD","value":"120.00"},"final_capture":true,"disbursement_mode":"INSTANT","seller_protection":{"status":"ELIGIBLE","dispute_categories":["ITEM_NOT_RECEIVED","UNAUTHORIZED_TRANSACTION"]},"seller_receivable_breakdown":{"gross_amount":{"currency_code":"USD","value":"120.00"},"paypal_fee":{"currency_code":"USD","value":"6.48"},"net_amount":{"currency_code":"USD","value":"113.52"}},"custom_id":"1","links":[{"
+I/flutter (14961): [PayPal] ✅ Payment Capture Successful
+I/flutter (14961): [PayPal] • Status: COMPLETED
+I/flutter (14961): [PayPal] • Transaction ID: 7LE22781FP6418418
+I/flutter (14961): [PayPal] Capture result: true
+I/flutter (14961): 
+I/flutter (14961): [Payment] 📥 Payment Result:
+I/flutter (14961):   • Success: true
+I/flutter (14961):   • Transaction ID: 3GU193619R739102N
+I/flutter (14961):   • Error Message: null
+I/flutter (14961): [Payment] ✅ Payment successful, processing completion...
+I/flutter (14961): 
+I/flutter (14961): [Payment] 💾 Processing Successful Payment
+I/flutter (14961): [Payment] 📝 Storing payment record in Firestore
+I/flutter (14961):   • Amount: 120.0
+I/flutter (14961):   • Service ID: 1
+I/flutter (14961):   • User ID: vkmcA4e8I6SxY6dpbbYbdHqaDi72
+I/flutter (14961): [Payment] 📤 Writing payment data:
+I/flutter (14961): {userId: vkmcA4e8I6SxY6dpbbYbdHqaDi72, serviceId: 1, amount: 120.0, timestamp: FieldValue(Instance of 'MethodChannelFieldValue'), metadata: {}}
+I/.example.poafix(14961): Background concurrent mark compact GC freed 5971KB AllocSpace bytes, 17(464KB) LOS objects, 49% free, 8481KB/16MB, paused 643us,4.862ms total 127.233ms
+D/HWUI    (14961): SkiaOpenGLPipeline::setSurface: this=0xb400007bd289f0c0, surface=NULL
+D/HWUI    (14961): SkiaOpenGLPipeline::setSurface: this=0xb400007b40748940, surface=NULL
+I/flutter (14961): [Payment] ✅ Payment record created
+I/flutter (14961):   • Document ID: lXQyP8EZbXN86MAX2jMn
+I/flutter (14961): [Payment] 🔄 Navigating to success screen
+I/flutter (14961): [Payment] ❌ Error processing payment success:
+I/flutter (14961):   • Error: Navigator.onGenerateRoute was null, but the route named "/booking-success" was referenced.
+I/flutter (14961): To use the Navigator API with named routes (pushNamed, pushReplacementNamed, or pushNamedAndRemoveUntil), the Navigator must be provided with an onGenerateRoute handler.
+I/flutter (14961): The Navigator was:
+I/flutter (14961):   NavigatorState#9c6d5(tickers: tracking 5 tickers)
+I/flutter (14961): [Payment] 🔄 Resetting processing state
+E/chromium(14961): [ERROR:android_webview/browser/aw_browser_terminator.cc:165] Renderer process (16634) crash detected (code -1).
+E/FilePhenotypeFlags(14961): Config package com.google.android.gms.clearcut_client#com.example.poafix cannot use FILE backing without declarative registration. See go/phenotype-android-integration#phenotype for more information. This will lead to stale flags.
+
+
