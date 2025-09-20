@@ -20,18 +20,22 @@ class PayPalService {
       }
 
       // Create payment record
-      final paymentRef = await FirebaseFirestore.instance.collection('payments').add({
-        'userId': user.uid,
-        'serviceId': serviceId,
-        'amount': amount,
-        'paymentMethod': 'paypal',
-        'status': 'pending',
-        'createdAt': FieldValue.serverTimestamp(),
-      });
+      final paymentRef = await FirebaseFirestore.instance
+          .collection('payments')
+          .add({
+            'userId': user.uid,
+            'serviceId': serviceId,
+            'amount': amount,
+            'paymentMethod': 'paypal',
+            'status': 'pending',
+            'createdAt': FieldValue.serverTimestamp(),
+          });
 
       // Get PayPal configuration
       final clientId = dotenv.env['PAYPAL_CLIENT_ID'];
-      final returnUrl = dotenv.env['PAYPAL_CALLBACK_URL'] ?? 'http://localhost:5000/api/payments/paypal/callback';
+      final returnUrl =
+          dotenv.env['PAYPAL_CALLBACK_URL'] ??
+          'http://localhost:5000/api/payments/paypal/callback';
       final sandbox = dotenv.env['PAYPAL_MODE'] == 'sandbox';
 
       if (clientId == null) {
@@ -59,12 +63,15 @@ class PayPalService {
     String? error,
   }) async {
     try {
-      await FirebaseFirestore.instance.collection('payments').doc(paymentId).update({
-        'status': success ? 'completed' : 'failed',
-        if (transactionId != null) 'transactionId': transactionId,
-        if (error != null) 'error': error,
-        'updatedAt': FieldValue.serverTimestamp(),
-      });
+      await FirebaseFirestore.instance
+          .collection('payments')
+          .doc(paymentId)
+          .update({
+            'status': success ? 'completed' : 'failed',
+            if (transactionId != null) 'transactionId': transactionId,
+            if (error != null) 'error': error,
+            'updatedAt': FieldValue.serverTimestamp(),
+          });
     } catch (e) {
       debugPrint('[PayPal Service] Error updating payment status: $e');
       rethrow;

@@ -33,11 +33,14 @@ class _PayPalButtonState extends State<PayPalButton> {
       return;
     }
 
-    final returnUrl = dotenv.env['PAYPAL_CALLBACK_URL'] ?? 'http://localhost:5000/api/payments/paypal/callback';
+    final returnUrl =
+        dotenv.env['PAYPAL_CALLBACK_URL'] ??
+        'http://localhost:5000/api/payments/paypal/callback';
     final sandbox = dotenv.env['PAYPAL_MODE'] == 'sandbox';
 
     final baseUrl = sandbox ? 'sandbox.paypal.com' : 'www.paypal.com';
-    final paypalUrl = 'https://$baseUrl/sdk/js?client-id=$clientId&currency=USD';
+    final paypalUrl =
+        'https://$baseUrl/sdk/js?client-id=$clientId&currency=USD';
 
     try {
       controller = WebViewController()
@@ -61,7 +64,7 @@ class _PayPalButtonState extends State<PayPalButton> {
             onNavigationRequest: (request) {
               final url = request.url;
               debugPrint('[PayPal] Navigation request: $url');
-              
+
               if (url.contains('paypal.com') || url.startsWith(returnUrl)) {
                 return NavigationDecision.navigate;
               }
@@ -139,14 +142,8 @@ class _PayPalButtonState extends State<PayPalButton> {
     return Stack(
       children: [
         if (!isLoading)
-          SizedBox(
-            height: 300,
-            child: WebViewWidget(controller: controller),
-          ),
-        if (isLoading)
-          const Center(
-            child: CircularProgressIndicator(),
-          ),
+          SizedBox(height: 300, child: WebViewWidget(controller: controller)),
+        if (isLoading) const Center(child: CircularProgressIndicator()),
       ],
     );
   }

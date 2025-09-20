@@ -7,6 +7,10 @@ class Category {
   final bool isPopular;
   final bool isFeatured;
   final int serviceCount;
+  final List<String> subCategories;
+  final Map<String, dynamic> requirements;
+  final Map<String, dynamic> serviceOptions;
+  final Map<String, dynamic> cancellationPolicy;
 
   Category({
     required this.id,
@@ -17,6 +21,10 @@ class Category {
     this.isPopular = false,
     this.isFeatured = false,
     this.serviceCount = 0,
+    this.subCategories = const [],
+    this.requirements = const {},
+    this.serviceOptions = const {},
+    this.cancellationPolicy = const {},
   });
 
   factory Category.fromJson(Map<String, dynamic> json) {
@@ -38,6 +46,15 @@ class Category {
       isPopular: json['isPopular'] as bool? ?? false,
       isFeatured: json['isFeatured'] as bool? ?? false,
       serviceCount: json['serviceCount'] as int? ?? 0,
+      subCategories:
+          (json['subCategories'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          [],
+      requirements: (json['requirements'] as Map<String, dynamic>?) ?? {},
+      serviceOptions: (json['serviceOptions'] as Map<String, dynamic>?) ?? {},
+      cancellationPolicy:
+          (json['cancellationPolicy'] as Map<String, dynamic>?) ?? {},
     );
   }
 

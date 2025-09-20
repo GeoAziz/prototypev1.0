@@ -101,7 +101,30 @@ class PopularServiceCard extends StatelessWidget {
                           style: AppTextStyles.caption,
                         ),
                         const Spacer(),
-                        Text('\$${service.price}', style: AppTextStyles.price),
+                        Text(
+                          service.priceMax != null
+                              ? 'KES ${service.price.toStringAsFixed(0)} - ${service.priceMax!.toStringAsFixed(0)}${service.pricingType == 'hourly'
+                                    ? "/hr"
+                                    : service.pricingType == 'per_unit'
+                                    ? "/unit"
+                                    : ''}'
+                              : 'KES ${service.price.toStringAsFixed(0)}${service.pricingType == 'hourly'
+                                    ? "/hr"
+                                    : service.pricingType == 'per_unit'
+                                    ? "/unit"
+                                    : ''}',
+                          style: AppTextStyles.price,
+                        ),
+                        if (service.categoryName.isNotEmpty)
+                          Text(
+                            service.categoryName,
+                            style: AppTextStyles.caption,
+                          ),
+                        if (service.subService.isNotEmpty)
+                          Text(
+                            service.subService,
+                            style: AppTextStyles.caption,
+                          ),
                       ],
                     ),
                   ],

@@ -17,16 +17,25 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen>
   final FirebaseService _firebaseService = FirebaseService();
 
   void _navigateToCategory(BuildContext context, Category category) {
+    debugPrint(
+      '[AllCategoriesScreen] Attempting navigation to category: id=${category.id}, name=${category.name}',
+    );
     try {
       if (category.id.isNotEmpty) {
+        debugPrint(
+          '[AllCategoriesScreen] Navigating to /categories/${category.id}',
+        );
         context.push('/categories/${category.id}');
       } else {
+        debugPrint(
+          '[AllCategoriesScreen] Invalid category ID for category: ${category.name}',
+        );
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(const SnackBar(content: Text('Invalid category ID')));
       }
     } catch (e) {
-      debugPrint('Navigation error: $e');
+      debugPrint('[AllCategoriesScreen] Navigation error: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error navigating to category: $e')),
       );
@@ -85,40 +94,72 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen>
       body: FadeTransition(
         opacity: _fadeAnim,
         child: FutureBuilder(
-          future: _firebaseService.collection('categories').get(),
+          future: _firebaseService.collection('serviceCategories').get(),
           builder: (context, snapshot) {
+            debugPrint(
+              '[AllCategoriesScreen] FutureBuilder: connectionState=${snapshot.connectionState}',
+            );
             if (snapshot.connectionState == ConnectionState.waiting) {
+              debugPrint(
+                '[AllCategoriesScreen] Waiting for Firestore categories...',
+              );
               return const Center(child: CircularProgressIndicator());
             }
             if (snapshot.hasError) {
+              debugPrint(
+                '[AllCategoriesScreen] Error fetching categories: ${snapshot.error}',
+              );
               return Center(child: Text('Error: ${snapshot.error}'));
             }
             final docs = snapshot.data?.docs ?? [];
+            debugPrint(
+              '[AllCategoriesScreen] Fetched ${docs.length} category docs from Firestore',
+            );
             final categories = docs
                 .map((doc) {
                   try {
                     final data = doc.data();
-                    debugPrint('Processing category doc ${doc.id}: $data');
-                    return Category.fromJson(data);
+                    debugPrint(
+                      '[AllCategoriesScreen] Processing category doc ${doc.id}: $data',
+                    );
+                    final cat = Category.fromJson(data);
+                    debugPrint(
+                      '[AllCategoriesScreen] Parsed category: id=${cat.id}, name=${cat.name}, isPopular=${cat.isPopular}, isFeatured=${cat.isFeatured}',
+                    );
+                    return cat;
                   } catch (e) {
-                    debugPrint('Error parsing category ${doc.id}: $e');
+                    debugPrint(
+                      '[AllCategoriesScreen] Error parsing category ${doc.id}: $e',
+                    );
                     return null;
                   }
                 })
                 .where((cat) => cat != null)
                 .cast<Category>()
                 .toList();
+            debugPrint(
+              '[AllCategoriesScreen] Total parsed categories: ${categories.length}',
+            );
             final filtered = categories
                 .where(
                   (c) => c.name.toLowerCase().contains(_search.toLowerCase()),
                 )
                 .toList();
+            debugPrint(
+              '[AllCategoriesScreen] Filtered categories for search "${_search}": ${filtered.length}',
+            );
             final popular = categories
                 .where((c) => c.isPopular == true)
                 .toList();
+            debugPrint(
+              '[AllCategoriesScreen] Popular categories count: ${popular.length}',
+            );
             final featured = categories
                 .where((c) => c.isFeatured == true)
                 .toList();
+            debugPrint(
+              '[AllCategoriesScreen] Featured categories count: ${featured.length}',
+            );
 
             return ListView(
               padding: const EdgeInsets.all(20),
@@ -151,6 +192,9 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen>
                           child: InkWell(
                             borderRadius: BorderRadius.circular(12),
                             onTap: () {
+                              debugPrint(
+                                '[CategoryCard] Popular tapped: id=${cat.id}, name=${cat.name}',
+                              );
                               context.push('/categories/${cat.id}');
                             },
                             child: Container(
@@ -203,6 +247,9 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen>
                           child: InkWell(
                             borderRadius: BorderRadius.circular(12),
                             onTap: () {
+                              debugPrint(
+                                '[CategoryCard] Featured tapped: id=${cat.id}, name=${cat.name}',
+                              );
                               context.push('/categories/${cat.id}');
                             },
                             child: Container(
@@ -267,6 +314,9 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen>
                       child: InkWell(
                         borderRadius: BorderRadius.circular(16),
                         onTap: () {
+                          debugPrint(
+                            '[CategoryCard] Grid tapped: id=${cat.id}, name=${cat.name}',
+                          );
                           context.push('/categories/${cat.id}');
                         },
                         child: Padding(

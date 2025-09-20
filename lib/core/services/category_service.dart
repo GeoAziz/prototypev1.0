@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:poafix/core/exceptions/service_exception.dart';
 import 'package:poafix/core/models/category.dart';
 import 'package:poafix/core/services/base_service.dart';
 
@@ -34,7 +33,9 @@ class CategoryService extends BaseService {
         }
       }
 
-      Query<Map<String, dynamic>> query = firestore.collection('categories');
+      Query<Map<String, dynamic>> query = firestore.collection(
+        'serviceCategories',
+      );
 
       if (isFeatured != null) {
         query = query.where('isFeatured', isEqualTo: isFeatured);
@@ -71,7 +72,7 @@ class CategoryService extends BaseService {
         }
       }
 
-      final doc = await firestore.collection('categories').doc(id).get();
+      final doc = await firestore.collection('serviceCategories').doc(id).get();
       if (!doc.exists) return null;
 
       final data = doc.data()!;
@@ -82,7 +83,7 @@ class CategoryService extends BaseService {
 
   Stream<List<Category>> streamCategories({bool? isFeatured, bool? isPopular}) {
     return handleServiceStream(
-      firestore.collection('categories').snapshots().map((snapshot) {
+      firestore.collection('serviceCategories').snapshots().map((snapshot) {
         var categories = snapshot.docs.map((doc) {
           final data = doc.data();
           data['id'] = doc.id;

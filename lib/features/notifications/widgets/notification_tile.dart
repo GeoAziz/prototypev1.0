@@ -35,9 +35,7 @@ class NotificationTile extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(16.0),
             decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(color: Colors.grey.shade200),
-              ),
+              border: Border(bottom: BorderSide(color: Colors.grey.shade200)),
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,7 +49,9 @@ class NotificationTile extends StatelessWidget {
                       Text(
                         notification.title,
                         style: AppTextStyles.body1.copyWith(
-                          fontWeight: notification.isRead ? FontWeight.normal : FontWeight.bold,
+                          fontWeight: notification.isRead
+                              ? FontWeight.normal
+                              : FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 4),

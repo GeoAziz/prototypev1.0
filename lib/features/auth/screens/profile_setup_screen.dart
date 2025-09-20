@@ -3,6 +3,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import '../widgets/location_picker_dialog.dart';
 
 class ProfileSetupScreen extends StatefulWidget {
   const ProfileSetupScreen({super.key});
@@ -23,7 +25,8 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen>
   String? _address;
   String? _language = 'English';
   bool _notificationsEnabled = true;
-  String? _location = 'Current Location';
+  String _location = 'Current Location';
+  LatLng? _locationLatLng;
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -46,7 +49,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen>
 
   @override
   Widget build(BuildContext context) {
-    Future<void> _pickAndUploadImage() async {
+    Future<void> pickAndUploadImage() async {
       final picker = ImagePicker();
       final pickedFile = await picker.pickImage(source: ImageSource.gallery);
       if (pickedFile != null) {
@@ -81,7 +84,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen>
               children: [
                 Center(
                   child: GestureDetector(
-                    onTap: _pickAndUploadImage,
+                    onTap: pickAndUploadImage,
                     child: Stack(
                       children: [
                         CircleAvatar(
@@ -179,10 +182,22 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen>
                 SizedBox(height: 16),
                 ListTile(
                   leading: Icon(Icons.location_on, color: Colors.blue),
-                  title: Text(_location ?? ''),
+                  title: Text(_location),
                   trailing: Icon(Icons.edit_location),
-                  onTap: () {
-                    // TODO: Implement location picker
+                  onTap: () async {
+                    final result = await showDialog<Map<String, dynamic>>(
+                      context: context,
+                      builder: (context) => LocationPickerDialog(
+                        initialPosition: _locationLatLng,
+                      ),
+                    );
+
+                    if (result != null) {
+                      setState(() {
+                        _locationLatLng = result['latLng'] as LatLng;
+                        _location = result['address'] as String;
+                      });
+                    }
                   },
                 ),
                 SizedBox(height: 24),
@@ -191,18 +206,58 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen>
                     if (_formKey.currentState!.validate()) {
                       final user = FirebaseAuth.instance.currentUser;
                       if (user != null) {
-                        await FirebaseFirestore.instance
+                        // Check if this is a provider profile
+                        final userDoc = await FirebaseFirestore.instance
                             .collection('users')
                             .doc(user.uid)
-                            .set({
-                              'fullName': _fullName ?? user.displayName,
-                              'email': _email ?? user.email,
-                              'phone': _phone ?? '',
-                              'bio': _bio ?? '',
-                              'address': _address ?? '',
-                              'language': _language ?? 'English',
-                              'notificationsEnabled': _notificationsEnabled,
-                            }, SetOptions(merge: true));
+                            .get();
+                        final isProvider =
+                            userDoc.data()?['role'] == 'UserRole.provider';
+
+                        if (isProvider) {
+                          await FirebaseFirestore.instance
+                              .collection('providers')
+                              .doc(user.uid)
+                              .set({
+                                'fullName': _fullName ?? user.displayName,
+                                'email': _email ?? user.email,
+                                'phone': _phone ?? '',
+                                'bio': _bio ?? '',
+                                'address': _address ?? '',
+                                'language': _language ?? 'English',
+                                'notificationsEnabled': _notificationsEnabled,
+                                'location': _location,
+                                'locationLatLng': _locationLatLng != null
+                                    ? GeoPoint(
+                                        _locationLatLng!.latitude,
+                                        _locationLatLng!.longitude,
+                                      )
+                                    : null,
+                                'updatedAt': FieldValue.serverTimestamp(),
+                              }, SetOptions(merge: true));
+                        } else {
+                          // For non-providers, update user document
+                          await FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(user.uid)
+                              .set({
+                                'fullName': _fullName ?? user.displayName,
+                                'email': _email ?? user.email,
+                                'phone': _phone ?? '',
+                                'bio': _bio ?? '',
+                                'address': _address ?? '',
+                                'language': _language ?? 'English',
+                                'notificationsEnabled': _notificationsEnabled,
+                                'location': _location,
+                                'locationLatLng': _locationLatLng != null
+                                    ? GeoPoint(
+                                        _locationLatLng!.latitude,
+                                        _locationLatLng!.longitude,
+                                      )
+                                    : null,
+                                'updatedAt': FieldValue.serverTimestamp(),
+                              }, SetOptions(merge: true));
+                        }
                       }
                       Navigator.pop(context);
                     }

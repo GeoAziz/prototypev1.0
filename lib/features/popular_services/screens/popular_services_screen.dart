@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:poafix/core/models/service.dart';
 import 'package:poafix/core/theme/app_colors.dart';
 import 'package:poafix/core/theme/app_text_styles.dart';
+import 'package:share_plus/share_plus.dart';
 
 class PopularServicesScreen extends StatefulWidget {
   const PopularServicesScreen({super.key});
@@ -152,8 +153,8 @@ class _PopularServicesScreenState extends State<PopularServicesScreen>
                               leading: ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
                                 child: Image.network(
-                                  service.images.isNotEmpty
-                                      ? service.images.first
+                                  service.images?.isNotEmpty == true
+                                      ? service.images!.first
                                       : '',
                                   width: 60,
                                   height: 60,
@@ -241,8 +242,28 @@ class _PopularServicesScreenState extends State<PopularServicesScreen>
                                       iconSize: 20,
                                       padding: EdgeInsets.zero,
                                       constraints: const BoxConstraints(),
-                                      onPressed: () {
-                                        // TODO: Implement share logic
+                                      onPressed: () async {
+                                        try {
+                                          final serviceUrl =
+                                              'https://poafix.app/service/${service.id}';
+                                          await Share.share(
+                                            'Check out ${service.name} on PoaFix! Price: \$${service.price}\n$serviceUrl',
+                                            subject:
+                                                'Check out this service on PoaFix',
+                                          );
+                                        } catch (e) {
+                                          if (mounted) {
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  'Error sharing service: $e',
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                        }
                                       },
                                     ),
                                     Flexible(

@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:poafix/core/models/provider.dart';
+// Ensure ServiceProvider is defined in provider.dart and exported
 import 'package:poafix/core/models/service.dart';
 import 'package:poafix/core/models/review.dart';
 import 'package:poafix/core/theme/app_colors.dart';
@@ -23,13 +24,15 @@ class _ProviderDetailsScreenState extends State<ProviderDetailsScreen>
   bool _isFollowing = false;
   final int _limit = 10; // Limit for pagination
 
-  Future<ServiceProvider?> _fetchProvider() async {
+  Future<Provider?> _fetchProvider() async {
     final doc = await FirebaseFirestore.instance
         .collection('providers')
         .doc(widget.providerId)
         .get();
     if (!doc.exists) return null;
-    return ServiceProvider.fromFirestore(doc);
+    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    data['id'] = doc.id; // Add document ID to the data
+    return Provider.fromJson(data);
   }
 
   Stream<List<Service>> _fetchProviderServices() {
@@ -58,7 +61,7 @@ class _ProviderDetailsScreenState extends State<ProviderDetailsScreen>
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<ServiceProvider?>(
+    return FutureBuilder<Provider?>(
       future: _fetchProvider(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -109,7 +112,7 @@ class _ProviderDetailsScreenState extends State<ProviderDetailsScreen>
                           width: double.infinity,
                           height: double.infinity,
                           child: ImageHelper.loadNetworkImage(
-                            imageUrl: provider.photo,
+                            imageUrl: provider.profileImageUrl ?? '',
                             fit: BoxFit.cover,
                             placeholder: const Center(
                               child: CircularProgressIndicator(),
@@ -265,7 +268,10 @@ class _ProviderDetailsScreenState extends State<ProviderDetailsScreen>
                           children: [
                             Text('About', style: AppTextStyles.headline2),
                             const SizedBox(height: 16),
-                            Text(provider.about, style: AppTextStyles.body2),
+                            Text(
+                              provider.businessDescription,
+                              style: AppTextStyles.body2,
+                            ),
                           ],
                         ),
                       ),
@@ -373,7 +379,7 @@ class _ProviderDetailsScreenState extends State<ProviderDetailsScreen>
     );
   }
 
-  Widget _buildProviderInfo(ServiceProvider provider) {
+  Widget _buildProviderInfo(Provider provider) {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Row(
@@ -381,7 +387,7 @@ class _ProviderDetailsScreenState extends State<ProviderDetailsScreen>
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: ImageHelper.loadNetworkImage(
-              imageUrl: provider.photo,
+              imageUrl: provider.profileImageUrl ?? '',
               width: 80,
               height: 80,
               fit: BoxFit.cover,
@@ -402,7 +408,7 @@ class _ProviderDetailsScreenState extends State<ProviderDetailsScreen>
                   ],
                 ),
                 const SizedBox(height: 4),
-                Text(provider.bio, style: AppTextStyles.body2),
+                Text(provider.businessDescription, style: AppTextStyles.body2),
                 const SizedBox(height: 8),
                 Row(
                   children: [
@@ -416,7 +422,7 @@ class _ProviderDetailsScreenState extends State<ProviderDetailsScreen>
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      '(${provider.reviewCount} reviews)',
+                      '(${provider.totalRatings} reviews)',
                       style: AppTextStyles.caption,
                     ),
                   ],
@@ -429,7 +435,7 @@ class _ProviderDetailsScreenState extends State<ProviderDetailsScreen>
     );
   }
 
-  Widget _buildStatsSection(ServiceProvider provider) {
+  Widget _buildStatsSection(Provider provider) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -441,11 +447,11 @@ class _ProviderDetailsScreenState extends State<ProviderDetailsScreen>
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildStatItem('${provider.yearsOfExperience}+', 'Years Experience'),
+          _buildStatItem('${provider.serviceCategories.length}', 'Services'),
           _buildVerticalDivider(),
-          _buildStatItem('${provider.projectsDone}+', 'Projects Done'),
+          _buildStatItem('${provider.totalRatings}', 'Reviews'),
           _buildVerticalDivider(),
-          _buildStatItem('${provider.completionRate}%', 'Completion Rate'),
+          _buildStatItem('${provider.rating.toStringAsFixed(1)}', 'Rating'),
         ],
       ),
     );

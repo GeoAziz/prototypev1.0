@@ -1,12 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-enum NotificationType {
-  booking,
-  payment,
-  promotion,
-  system,
-  other,
-}
+enum NotificationType { booking, payment, promotion, system, other }
 
 class NotificationModel {
   final String id;

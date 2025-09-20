@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../../core/services/db_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:poafix/core/models/service.dart';
@@ -75,22 +75,33 @@ class _BookingScreenState extends State<BookingScreen> {
 
     try {
       final service = demoServices.firstWhere((s) => s.id == widget.serviceId);
-      final totalAmount = (service.price * _quantity).toStringAsFixed(2);
+      double totalAmountValue = service.price * _quantity;
+      if (service.pricingType == 'hourly' ||
+          service.pricingType == 'per_unit') {
+        // For hourly/per_unit, multiply by quantity
+        totalAmountValue = service.price * _quantity;
+      } else if (service.pricingType == 'callout_fee') {
+        totalAmountValue = service.price;
+      }
+      final totalAmount = totalAmountValue.toStringAsFixed(2);
 
       final bookingData = {
         'serviceTitle': service.name,
         'provider': service.providerId,
         'status': 'booked',
-        'bookedAt': Timestamp.now(),
+        'bookedAt': DateTime.now().toIso8601String(),
         'userId': FirebaseAuth.instance.currentUser?.uid ?? '',
         'address': _addressController.text.trim(),
         'notes': _notesController.text.trim(),
-        'date': Timestamp.fromDate(_selectedDate),
+        'date': _selectedDate.toIso8601String(),
         'time': _selectedTime,
         'quantity': _quantity,
         'paymentMethod': _selectedPaymentMethod,
         'serviceId': widget.serviceId,
         'price': service.price,
+        'priceMax': service.priceMax,
+        'currency': service.currency,
+        'pricingType': service.pricingType,
         'totalAmount': totalAmount,
       };
       debugPrint('[BookingScreen] Booking data: ' + bookingData.toString());
@@ -98,7 +109,7 @@ class _BookingScreenState extends State<BookingScreen> {
       final bookingRef = await _bookingService.addBooking(bookingData);
       debugPrint('[BookingScreen] Booking added successfully');
 
-      // Create notification for the booking
+      // Create notification in local storage
       final notificationData = {
         'title': 'Booking Confirmed',
         'body': 'Your booking for ${service.name} has been confirmed',
@@ -109,14 +120,13 @@ class _BookingScreenState extends State<BookingScreen> {
           'amount': totalAmount,
         },
         'route': '/booking-details/${bookingRef.id}',
+        'userId': FirebaseAuth.instance.currentUser?.uid,
+        'createdAt': DateTime.now().toIso8601String(),
+        'isRead': false,
       };
 
-      await FirebaseFirestore.instance.collection('notifications').add({
-        ...notificationData,
-        'userId': FirebaseAuth.instance.currentUser?.uid,
-        'createdAt': FieldValue.serverTimestamp(),
-        'isRead': false,
-      });
+      // Using local storage for notifications
+      await DBHelper.instance.insertNotification(notificationData);
 
       setState(() {
         _isBooking = false;
@@ -200,7 +210,17 @@ class _BookingScreenState extends State<BookingScreen> {
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    '\$${service.price} / service',
+                                    service.priceMax != null
+                                        ? 'KES ${service.price.toStringAsFixed(0)} - ${service.priceMax!.toStringAsFixed(0)}${service.pricingType == 'hourly'
+                                              ? "/hr"
+                                              : service.pricingType == 'per_unit'
+                                              ? "/unit"
+                                              : ''}'
+                                        : 'KES ${service.price.toStringAsFixed(0)}${service.pricingType == 'hourly'
+                                              ? "/hr"
+                                              : service.pricingType == 'per_unit'
+                                              ? "/unit"
+                                              : ''}',
                                     style: AppTextStyles.price,
                                   ),
                                 ],
@@ -421,21 +441,34 @@ class _BookingScreenState extends State<BookingScreen> {
                             title: 'Pay with PayPal',
                             subtitle: 'International secure payment',
                             onTap: () async {
-                              final service = demoServices.firstWhere((s) => s.id == widget.serviceId);
-                              final totalAmount = (service.price * _quantity).toStringAsFixed(2);
-                              debugPrint('[BookingScreen] PayPal selected. Amount: $totalAmount, Service: ${service.name}');
+                              final service = demoServices.firstWhere(
+                                (s) => s.id == widget.serviceId,
+                              );
+                              final totalAmount = (service.price * _quantity)
+                                  .toStringAsFixed(2);
+                              debugPrint(
+                                '[BookingScreen] PayPal selected. Amount: $totalAmount, Service: ${service.name}',
+                              );
                               await PayPalService.makePayment(
                                 context: context,
                                 amount: totalAmount,
                                 itemName: service.name,
                                 onResult: (bool success) {
-                                  debugPrint('[BookingScreen] PayPal payment result: $success');
+                                  debugPrint(
+                                    '[BookingScreen] PayPal payment result: $success',
+                                  );
                                   if (success) {
-                                    setState(() => _selectedPaymentMethod = 'paypal');
-                                    debugPrint('[BookingScreen] Payment successful, method set to PayPal');
+                                    setState(
+                                      () => _selectedPaymentMethod = 'paypal',
+                                    );
+                                    debugPrint(
+                                      '[BookingScreen] Payment successful, method set to PayPal',
+                                    );
                                     _completeBooking();
                                   } else {
-                                    debugPrint('[BookingScreen] PayPal payment failed');
+                                    debugPrint(
+                                      '[BookingScreen] PayPal payment failed',
+                                    );
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         content: Text('PayPal payment failed'),
@@ -468,7 +501,9 @@ class _BookingScreenState extends State<BookingScreen> {
                             title: 'Cash on Delivery',
                             subtitle: 'Pay when service is complete',
                             onTap: () {
-                              debugPrint('[BookingScreen] Cash on Delivery selected');
+                              debugPrint(
+                                '[BookingScreen] Cash on Delivery selected',
+                              );
                               setState(() => _selectedPaymentMethod = 'cash');
                               _completeBooking();
                             },
@@ -511,7 +546,16 @@ class _BookingScreenState extends State<BookingScreen> {
                       children: [
                         const Text('Total Price', style: AppTextStyles.body2),
                         Text(
-                          '\$${(service.price * _quantity).toStringAsFixed(2)}',
+                          () {
+                            double totalAmountValue = service.price * _quantity;
+                            if (service.pricingType == 'hourly' ||
+                                service.pricingType == 'per_unit') {
+                              totalAmountValue = service.price * _quantity;
+                            } else if (service.pricingType == 'callout_fee') {
+                              totalAmountValue = service.price;
+                            }
+                            return 'KES ${totalAmountValue.toStringAsFixed(2)}';
+                          }(),
                           style: AppTextStyles.headline2.copyWith(
                             color: AppColors.primary,
                           ),

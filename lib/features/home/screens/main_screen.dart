@@ -26,10 +26,14 @@ class _MainScreenState extends State<MainScreen> {
     final location = GoRouterState.of(context).matchedLocation;
     if (location == '/') {
       _currentIndex = 0;
-    } else if (location == '/bookings') {
+    } else if (location == '/map') {
       _currentIndex = 1;
-    } else if (location == '/profile') {
+    } else if (location == '/services') {
       _currentIndex = 2;
+    } else if (location == '/bookings') {
+      _currentIndex = 3;
+    } else if (location == '/profile') {
+      _currentIndex = 4;
     }
   }
 
@@ -42,8 +46,9 @@ class _MainScreenState extends State<MainScreen> {
           StreamBuilder<List<NotificationModel>>(
             stream: NotificationService().notificationsStream,
             builder: (context, snapshot) {
-              final unreadCount = snapshot.data?.where((n) => !n.isRead).length ?? 0;
-              
+              final unreadCount =
+                  snapshot.data?.where((n) => !n.isRead).length ?? 0;
+
               return Stack(
                 children: [
                   IconButton(
@@ -91,8 +96,12 @@ class _MainScreenState extends State<MainScreen> {
           if (index == 0) {
             context.go('/');
           } else if (index == 1) {
-            context.go('/bookings');
+            context.go('/map');
           } else if (index == 2) {
+            context.go('/services');
+          } else if (index == 3) {
+            context.go('/bookings');
+          } else if (index == 4) {
             context.go('/profile');
           }
         },
@@ -101,6 +110,16 @@ class _MainScreenState extends State<MainScreen> {
             icon: Icon(poafixIcons.homeOutline),
             selectedIcon: Icon(poafixIcons.home),
             label: 'Home',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.map_outlined),
+            selectedIcon: Icon(Icons.map),
+            label: 'Map',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.home_repair_service_outlined),
+            selectedIcon: Icon(Icons.home_repair_service),
+            label: 'Services',
           ),
           NavigationDestination(
             icon: Icon(poafixIcons.bookingOutline),

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -53,11 +54,22 @@ class _LoginScreenState extends State<LoginScreen> {
       // Save user data for persistence
       await AuthService.saveUserData(userCredential.user!);
 
+      // Fetch user role from Firestore
+      final userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user!.uid)
+          .get();
+      final role = userDoc.data()?['role']?.toString();
+
       setState(() {
         _isLoading = false;
       });
       if (mounted) {
-        context.go('/');
+        if (role == 'UserRole.provider' || role == 'provider') {
+          context.go('/providerHome');
+        } else {
+          context.go('/');
+        }
       }
     } on FirebaseAuthException catch (e) {
       setState(() {
@@ -168,7 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 alignment: Alignment.centerRight,
                 child: TextButton(
                   onPressed: () {
-                    // Navigate to forgot password
+                    context.push('/forgot-password');
                   },
                   child: Text(
                     'Forgot Password?',

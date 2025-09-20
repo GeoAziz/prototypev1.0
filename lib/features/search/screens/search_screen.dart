@@ -60,7 +60,7 @@ class _SearchScreenState extends State<SearchScreen> {
       );
 
       setState(() {
-        _searchResults = results;
+        _searchResults = results.services;
         _isLoading = false;
       });
     } catch (e) {
@@ -158,7 +158,7 @@ class _SearchScreenState extends State<SearchScreen> {
         return PopularServiceCard(
           service: service,
           onTap: () {
-            context.push('/services/${service.id}');
+            context.push('/service/${service.id}');
           },
         );
       },

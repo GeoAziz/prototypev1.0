@@ -43,12 +43,14 @@ class _BookingsScreenState extends State<BookingsScreen> {
       body: StreamBuilder<List<Booking>>(
         stream: _bookingService.streamBookingsForUser(_getCurrentUserId()),
         builder: (context, snapshot) {
-          String getCurrentUserId() {
-            // Replace with your actual user auth logic
-            // For Firebase Auth:
-            // import 'package:firebase_auth/firebase_auth.dart';
-            // return FirebaseAuth.instance.currentUser?.uid ?? '';
-            return ''; // TODO: Implement actual user ID fetch
+          final userId = FirebaseAuth.instance.currentUser?.uid;
+          if (userId == null) {
+            return const Center(
+              child: Text(
+                'Please log in to view your bookings',
+                style: TextStyle(fontSize: 16),
+              ),
+            );
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {

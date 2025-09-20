@@ -250,8 +250,19 @@ class _ServiceDetailsScreenState extends State<ServiceDetailsScreen> {
                                 child: IconButton(
                                   icon: const Icon(Icons.share),
                                   onPressed: () {
+                                    final priceText = service.priceMax != null
+                                        ? 'KES ${service.price.toStringAsFixed(0)} - ${service.priceMax!.toStringAsFixed(0)}${service.pricingType == 'hourly'
+                                              ? "/hr"
+                                              : service.pricingType == 'per_unit'
+                                              ? "/unit"
+                                              : ''}'
+                                        : 'KES ${service.price.toStringAsFixed(0)}${service.pricingType == 'hourly'
+                                              ? "/hr"
+                                              : service.pricingType == 'per_unit'
+                                              ? "/unit"
+                                              : ''}';
                                     final shareText =
-                                        'Check out this service: ${service.name}\n${service.description}\nPrice: ${service.price}\n';
+                                        'Check out this service: ${service.name}\n${service.description}\nPrice: $priceText\n';
                                     Share.share(shareText);
                                   },
                                 ),
@@ -298,7 +309,7 @@ class _ServiceDetailsScreenState extends State<ServiceDetailsScreen> {
                                 label:
                                     'Service images carousel for ${service.name}',
                                 child: ServiceImageCarousel(
-                                  images: service.images,
+                                  images: service.images ?? [],
                                 ),
                               ),
                             ),
@@ -334,7 +345,17 @@ class _ServiceDetailsScreenState extends State<ServiceDetailsScreen> {
                                         label:
                                             'Service price: ${service.price}',
                                         child: Text(
-                                          '�24${service.price}',
+                                          service.priceMax != null
+                                              ? 'KES ${service.price.toStringAsFixed(0)} - ${service.priceMax!.toStringAsFixed(0)}${service.pricingType == 'hourly'
+                                                    ? "/hr"
+                                                    : service.pricingType == 'per_unit'
+                                                    ? "/unit"
+                                                    : ''}'
+                                              : 'KES ${service.price.toStringAsFixed(0)}${service.pricingType == 'hourly'
+                                                    ? "/hr"
+                                                    : service.pricingType == 'per_unit'
+                                                    ? "/unit"
+                                                    : ''}',
                                           style: AppTextStyles.headline2
                                               .copyWith(
                                                 color: AppColors.primary,
@@ -342,6 +363,16 @@ class _ServiceDetailsScreenState extends State<ServiceDetailsScreen> {
                                               ),
                                         ),
                                       ),
+                                      if (service.categoryName.isNotEmpty)
+                                        Text(
+                                          service.categoryName,
+                                          style: AppTextStyles.caption,
+                                        ),
+                                      if (service.subService.isNotEmpty)
+                                        Text(
+                                          service.subService,
+                                          style: AppTextStyles.caption,
+                                        ),
                                     ],
                                   ),
                                   SizedBox(height: isTablet ? 20 : 12),
@@ -441,33 +472,10 @@ class _ServiceDetailsScreenState extends State<ServiceDetailsScreen> {
                           SliverToBoxAdapter(
                             child: Container(
                               margin: EdgeInsets.only(top: isTablet ? 16 : 8),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: horizontalPadding,
-                                    ),
-                                    child: NearbyProvidersSection(
-                                      serviceId: service.id,
-                                      radius: 10.0, // 10km radius
-                                    ),
-                                  ),
-                                  // Add a hint below providers section
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                      top: isTablet ? 8 : 4,
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'Select a provider above to view details and book.',
-                                        style: AppTextStyles.body2.copyWith(
-                                          color: AppColors.textSecondary,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                              child: NearbyProvidersSection(
+                                serviceId: service.id,
+                                serviceCategoryName: service.categoryName,
+                                radius: 10.0, // 10km radius
                               ),
                             ),
                           ),

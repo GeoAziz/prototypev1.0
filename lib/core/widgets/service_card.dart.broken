@@ -1,0 +1,165 @@
+import 'package:flutter/material.dart';
+import 'package:poafix/core/models/service.dart';
+import 'package:poafix/core/theme/app_colors.dart';
+import 'package:poafix/core/theme/app_text_styles.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:poafix/features/service_comparison/widgets/comparison_manager.dart';
+
+class ServiceCard extends StatelessWidget {
+  fina                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }e service;
+  final VoidCallback? onTap;
+  final bool showRating;
+  final bool showProvider;
+  final bool isCompact;
+  final bool showCompareButton;
+
+  const ServiceCard({
+    super.key,
+    required this.service,
+    this.onTap,
+    this.showRating = true,
+    this.showProvider = false,
+    this.isCompact = false,
+    this.showCompareButton = true,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      elevation: 3,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: isCompact ? _buildCompactLayout() : _buildFullLayout(),
+      ),
+    );
+  }
+
+  Widget _buildCompactLayout() {
+    return Padding(
+      padding: const EdgeInsets.all(12),
+      child: Row(
+        children: [
+          // Service Image
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Hero(
+              tag: 'service_${service.id}',
+              child: CachedNetworkImage(
+                imageUrl: service.image,
+                width: 80,
+                height: 80,
+                fit: BoxFit.cover,
+                placeholder: (context, url) => Container(
+                  width: 80,
+                  height: 80,
+                  color: Colors.grey[300],
+                  child: const Center(
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                ),
+                errorWidget: (context, url, error) => Container(
+                  width: 80,
+                  height: 80,
+                  color: Colors.grey[300],
+                  child: const Icon(Icons.image_not_supported),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 12),
+          
+          // Service Info
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  service.name,
+                  style: AppTextStyles.subtitle1,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 4),
+                
+                if (showProvider && service.providerId != null) ...[
+                  Text(
+                    'Provider: ${service.providerId}',
+                    style: AppTextStyles.caption.copyWith(
+                      color: AppColors.primary,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                ],
+                
+                Row(
+                  children: [
+                    if (showRating) ...[
+                      Icon(
+                        Icons.star,
+                        size: 14,
+                        color: Colors.amber[600],
+                      ),
+                      const SizedBox(width: 2),
+                      Text(
+                        service.rating.toStringAsFixed(1),
+                        style: AppTextStyles.caption,
+                      ),
+                      const SizedBox(width: 8),
+                    ],
+                    Text(
+                      'KES ${service.price.toStringAsFixed(0)}',
+                      style: AppTextStyles.subtitle2.copyWith(
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          
+          // Action Buttons
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (showCompareButton)
+                ComparisonButton(
+                  serviceId: service.id,
+                  onChanged: () {
+                    // Trigger rebuild if needed
+                  },
+                ),
+              IconButton(
+                icon: const Icon(Icons.arrow_forward_ios, size: 16),
+                onPressed: onTap,
+                color: AppColors.primary,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFullLayout() {
+    return SizedBox(
+      height: 400,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Service Image with badges
+          Stack(
+}

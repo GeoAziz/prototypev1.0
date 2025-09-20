@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class Booking {
   final String id;
   final String serviceTitle;
@@ -25,13 +23,13 @@ class Booking {
       serviceTitle: json['serviceTitle'] ?? '',
       provider: json['provider'] ?? '',
       status: json['status'] ?? 'pending',
-      bookedAt: (json['bookedAt'] as Timestamp).toDate(),
+      bookedAt: DateTime.parse(json['bookedAt'] as String),
       userId: json['userId'] ?? '',
       amount: (json['amount'] is int)
           ? (json['amount'] as int).toDouble()
           : (json['amount'] is double)
-              ? json['amount'] as double
-              : double.tryParse(json['amount']?.toString() ?? '') ?? 0.0,
+          ? json['amount'] as double
+          : double.tryParse(json['amount']?.toString() ?? '') ?? 0.0,
     );
   }
 
@@ -40,9 +38,33 @@ class Booking {
       'serviceTitle': serviceTitle,
       'provider': provider,
       'status': status,
-      'bookedAt': Timestamp.fromDate(bookedAt),
+      'bookedAt': bookedAt.toIso8601String(),
       'userId': userId,
       'amount': amount,
     };
+  }
+
+  Map<String, dynamic> toSqlite() {
+    return {
+      'id': id,
+      'serviceTitle': serviceTitle,
+      'provider': provider,
+      'status': status,
+      'bookedAt': bookedAt.toIso8601String(),
+      'userId': userId,
+      'amount': amount,
+    };
+  }
+
+  factory Booking.fromSqlite(Map<String, dynamic> data) {
+    return Booking(
+      id: data['id'] as String,
+      serviceTitle: data['serviceTitle'] as String,
+      provider: data['provider'] as String,
+      status: data['status'] as String,
+      bookedAt: DateTime.parse(data['bookedAt'] as String),
+      userId: data['userId'] as String,
+      amount: data['amount'] as double,
+    );
   }
 }

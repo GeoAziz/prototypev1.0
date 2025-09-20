@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../../core/services/direct_payment_service.dart';
 import '../../../core/payment/payment_manager.dart';
+import '../../../core/services/user_service.dart';
 
 class PaymentMethodsScreen extends StatefulWidget {
   final double amount;
@@ -32,10 +33,11 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
 
     setState(() => _isProcessing = true);
     try {
+      final currency = await UserService.getUserCurrency();
       final success = await DirectPaymentService.processStripePayment(
         context: context,
         amount: widget.amount,
-        currency: 'USD', // TODO: Make configurable
+        currency: currency,
         serviceId: widget.serviceId,
         metadata: {'user_id': _userId, ...widget.metadata},
       );
@@ -61,26 +63,27 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
     debugPrint('  • User ID: $_userId');
 
     setState(() => _isProcessing = true);
-    
+
     try {
       // Validate payment parameters
       if (widget.amount <= 0) {
         debugPrint('[Payment] ❌ Invalid amount: ${widget.amount}');
         throw Exception('Invalid payment amount: ${widget.amount}');
       }
-      
+
       if (widget.serviceId.isEmpty) {
         debugPrint('[Payment] ❌ Missing service ID');
         throw Exception('Service ID is required');
       }
-      
+
       debugPrint('[Payment] ✅ Parameter validation passed');
       debugPrint('[Payment] 🔄 Initializing PayPal payment...');
-      
+
+      final currency = await UserService.getUserCurrency();
       final paymentManager = PaymentManager('paypal');
       final result = await paymentManager.pay(
         amount: widget.amount,
-        currency: 'USD',
+        currency: currency,
         serviceId: widget.serviceId,
         userData: {
           'userId': _userId,
@@ -90,12 +93,12 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
           'context': context,
         },
       );
-      
+
       debugPrint('\n[Payment] 📥 Payment Result:');
       debugPrint('  • Success: ${result.success}');
       debugPrint('  • Transaction ID: ${result.transactionId}');
       debugPrint('  • Error Message: ${result.errorMessage}');
-      
+
       if (result.success) {
         debugPrint('[Payment] ✅ Payment successful, processing completion...');
         await _onPaymentSuccess();
@@ -120,7 +123,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
       debugPrint('  • Amount: ${widget.amount}');
       debugPrint('  • Service ID: ${widget.serviceId}');
       debugPrint('  • User ID: $_userId');
-      
+
       // Validate amount one more time before storing
       if (widget.amount <= 0) {
         throw Exception('Invalid amount for payment record: ${widget.amount}');
@@ -134,14 +137,14 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
         'timestamp': FieldValue.serverTimestamp(),
         'metadata': widget.metadata,
       };
-      
+
       debugPrint('[Payment] 📤 Writing payment data:');
       debugPrint(paymentData.toString());
-      
+
       final docRef = await FirebaseFirestore.instance
           .collection('payments')
           .add(paymentData);
-          
+
       debugPrint('[Payment] ✅ Payment record created');
       debugPrint('  • Document ID: ${docRef.id}');
 

@@ -1,3 +1,4 @@
+// Removed unused import for ServiceService
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
@@ -28,7 +29,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchController = TextEditingController();
   final _categoryService = CategoryService();
-  final _serviceService = ServiceService();
+  // Removed unused _serviceService
   final _promotionService = PromotionService();
 
   late Stream<List<Category>> _categoriesStream;
@@ -53,10 +54,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _initStreams() {
     _categoriesStream = _categoryService.streamCategories();
-    _popularServicesStream = _serviceService.streamServices(
-      isPopular: true,
-      limit: 10,
-    );
+    _popularServicesStream = FirebaseFirestore.instance
+        .collection('popular_services')
+        .snapshots()
+        .map(
+          (snapshot) => snapshot.docs.map((doc) {
+            var data = Map<String, dynamic>.from(doc.data());
+            data['id'] = doc.id;
+            return Service.fromJson(data);
+          }).toList(),
+        );
     _promotionsStream = _promotionService.streamPromotions();
     _loadFeaturedServices();
   }
@@ -76,17 +83,25 @@ class _HomeScreenState extends State<HomeScreen> {
 
     try {
       final query = FirebaseFirestore.instance
-          .collection('services')
-          .where('isFeatured', isEqualTo: true)
+          .collection('featured_services')
           .orderBy('bookingCount', descending: true)
           .limit(10);
 
+      debugPrint('[FeaturedServices] Querying featured_services collection...');
+
       final QuerySnapshot snapshot;
       if (_lastFeaturedDoc != null) {
+        debugPrint(
+          '[FeaturedServices] Using pagination, last doc: [33m${_lastFeaturedDoc!.id}[0m',
+        );
         snapshot = await query.startAfterDocument(_lastFeaturedDoc!).get();
       } else {
         snapshot = await query.get();
       }
+
+      debugPrint(
+        '[FeaturedServices] Fetched ${snapshot.docs.length} docs from Firestore.',
+      );
 
       if (!mounted) return;
 
@@ -95,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
             var data = Map<String, dynamic>.from(
               doc.data() as Map<String, dynamic>,
             );
-            // Ensure all required fields are present and not null
+            debugPrint('[FeaturedServices] Doc ${doc.id} data: $data');
             if (data['name'] == null ||
                 data['description'] == null ||
                 data['price'] == null ||
@@ -103,15 +118,28 @@ class _HomeScreenState extends State<HomeScreen> {
                 data['providerId'] == null ||
                 data['image'] == null) {
               debugPrint(
-                'Skipping service doc ${doc.id} due to missing required fields',
+                '[FeaturedServices] Skipping doc ${doc.id} due to missing required fields: ' +
+                    [
+                      if (data['name'] == null) 'name',
+                      if (data['description'] == null) 'description',
+                      if (data['price'] == null) 'price',
+                      if (data['categoryId'] == null) 'categoryId',
+                      if (data['providerId'] == null) 'providerId',
+                      if (data['image'] == null) 'image',
+                    ].join(', '),
               );
               return null;
             }
             data['id'] = doc.id;
+            debugPrint('[FeaturedServices] Parsed service: ${data['name']}');
             return Service.fromJson(data);
           })
           .whereType<Service>()
           .toList();
+
+      debugPrint(
+        '[FeaturedServices] Parsed ${newServices.length} valid featured services.',
+      );
 
       setState(() {
         _featuredServices.addAll(newServices);
@@ -126,8 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         _isLoadingFeatured = false;
       });
-      // Use proper logging instead of print
-      debugPrint('Error loading featured services: $e');
+      debugPrint('[FeaturedServices] Error loading featured services: $e');
     }
   }
 
@@ -219,23 +246,68 @@ class _HomeScreenState extends State<HomeScreen> {
               child: StreamBuilder<List<Category>>(
                 stream: _categoriesStream,
                 builder: (context, snapshot) {
+                  debugPrint(
+                    '[Categories] StreamBuilder called. hasData: \\${snapshot.hasData}, hasError: \\${snapshot.hasError}, connectionState: \\${snapshot.connectionState}',
+                  );
+                  debugPrint(
+                    '[Categories] Raw snapshot: \\${snapshot.toString()}',
+                  );
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    debugPrint('[Categories] Waiting for category data...');
+                  }
                   if (snapshot.hasError) {
+                    debugPrint(
+                      '[Categories] ERROR: Type=\\${snapshot.error.runtimeType}, Value=\\${snapshot.error}',
+                    );
+                    debugPrint(
+                      '[Categories] StackTrace: \\${snapshot.stackTrace}',
+                    );
+                    if (snapshot.error is Exception) {
+                      debugPrint(
+                        '[Categories] Exception details: \\${(snapshot.error as Exception).toString()}',
+                      );
+                    }
                     return Center(
-                      child: Text(
-                        'Error loading categories',
-                        style: AppTextStyles.body2.copyWith(
-                          color: AppColors.error,
-                        ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Error loading categories',
+                            style: AppTextStyles.body2.copyWith(
+                              color: AppColors.error,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            snapshot.error?.toString() ?? '',
+                            style: AppTextStyles.caption.copyWith(
+                              color: AppColors.error,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
                       ),
                     );
                   }
 
                   if (!snapshot.hasData) {
+                    debugPrint('[Categories] No category data yet.');
                     return const Center(child: CircularProgressIndicator());
                   }
 
                   final categories = snapshot.data!;
+                  debugPrint(
+                    '[Categories] Received categories: \\${categories.length}',
+                  );
+                  for (final cat in categories) {
+                    debugPrint(
+                      '[Categories] Category: id=\\${cat.id}, name=\\${cat.name}',
+                    );
+                  }
                   if (categories.isEmpty) {
+                    debugPrint(
+                      '[Categories] No categories found in Firestore.',
+                    );
                     return Center(
                       child: Text(
                         'No categories available',
@@ -253,12 +325,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     itemBuilder: (context, index) {
                       final category = categories[index];
                       return Semantics(
-                        label: 'Category: ${category.name}',
+                        label: 'Category: \\${category.name}',
                         button: true,
                         child: CategoryCard(
                           category: category,
-                          onTap: () =>
-                              context.push('/categories/${category.id}'),
+                          onTap: () {
+                            debugPrint(
+                              '[CategoryNav] Navigating to /categories/${category.id} (name: ${category.name})',
+                            );
+                            context.push('/categories/${category.id}');
+                          },
                         ),
                       );
                     },
@@ -307,7 +383,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: FeaturedServiceCard(
                                   service: service,
                                   onTap: () =>
-                                      context.push('/services/${service.id}'),
+                                      context.push('/service/${service.id}'),
                                   key: ValueKey(service.id),
                                 ),
                               );
@@ -353,13 +429,29 @@ class _HomeScreenState extends State<HomeScreen> {
               stream: _popularServicesStream,
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
+                  debugPrint(
+                    'Popular services stream error: ${snapshot.error}\nStack: ${snapshot.stackTrace}',
+                  );
                   return SliverToBoxAdapter(
                     child: Center(
-                      child: Text(
-                        'Error loading popular services',
-                        style: AppTextStyles.body2.copyWith(
-                          color: AppColors.error,
-                        ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Error loading popular services',
+                            style: AppTextStyles.body2.copyWith(
+                              color: AppColors.error,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            snapshot.error?.toString() ?? '',
+                            style: AppTextStyles.caption.copyWith(
+                              color: AppColors.error,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   );
@@ -371,17 +463,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 }
 
-                final services = snapshot.data!
-                    .where(
-                      (service) =>
-                          service.name != null &&
-                          service.description != null &&
-                          service.price != null &&
-                          service.categoryId != null &&
-                          service.providerId != null &&
-                          service.image != null,
-                    )
-                    .toList();
+                final services = snapshot.data!.toList();
 
                 if (services.isEmpty) {
                   return SliverToBoxAdapter(
@@ -404,7 +486,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       button: true,
                       child: PopularServiceCard(
                         service: service,
-                        onTap: () => context.push('/services/${service.id}'),
+                        onTap: () => context.push('/service/${service.id}'),
                       ),
                     );
                   }, childCount: services.length),

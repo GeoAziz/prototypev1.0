@@ -1,38 +1,70 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Service {
+  static const String defaultImage =
+      'https://img.icons8.com/material-outlined/96/000000/service.png';
+
+  static String normalizePricingType(String? type) {
+    if (type == null) return 'fixed';
+    switch (type.toLowerCase()) {
+      case 'flat':
+      case 'fixed':
+        return 'fixed';
+      case 'hourly':
+        return 'hourly';
+      case 'per_unit':
+      case 'perunit':
+      case 'unit':
+        return 'per_unit';
+      default:
+        return 'fixed';
+    }
+  }
+
   final String id;
   final String name;
   final String description;
   final double price;
+  final double? priceMax; // For price range
+  final String currency; // e.g., 'KES'
+  final String pricingType; // e.g., 'flat', 'hourly', 'per_unit', 'callout_fee'
   final String categoryId;
+  final String categoryName;
+  final String subService;
   final String image;
   final double rating;
   final int reviewCount;
   final int bookingCount;
-  final List<String> images;
+  final List<String>? images;
   final List<String> features;
   final bool isFeatured;
   final bool isPopular;
   final GeoPoint? location;
-  final String providerId;
+  final String? providerId;
+  final bool active;
 
   Service({
     required this.id,
     required this.name,
     required this.description,
     required this.price,
+    this.priceMax,
+    this.currency = 'KES',
+    this.pricingType = 'fixed',
     required this.categoryId,
+    this.categoryName = '',
+    this.subService = '',
     required this.image,
     required this.rating,
     required this.reviewCount,
     required this.bookingCount,
-    required this.images,
+    this.images,
     required this.features,
-    required this.providerId,
+    this.providerId,
     this.isFeatured = false,
     this.isPopular = false,
     this.location,
+    this.active = true,
   });
 
   factory Service.fromJson(Map<String, dynamic> json) {
@@ -41,8 +73,13 @@ class Service {
       name: json['name'] as String? ?? '',
       description: json['description'] as String? ?? '',
       price: (json['price'] as num?)?.toDouble() ?? 0.0,
+      priceMax: (json['priceMax'] as num?)?.toDouble(),
+      currency: json['currency'] as String? ?? 'KES',
+      pricingType: normalizePricingType(json['pricingType'] as String?),
       categoryId: json['categoryId'] as String? ?? '',
-      image: json['image'] as String? ?? '',
+      categoryName: json['categoryName'] as String? ?? '',
+      subService: json['subService'] as String? ?? '',
+      image: json['image'] as String? ?? defaultImage,
       rating: (json['rating'] as num?)?.toDouble() ?? 0.0,
       reviewCount: json['reviewCount'] as int? ?? 0,
       bookingCount: json['bookingCount'] as int? ?? 0,
@@ -53,15 +90,17 @@ class Service {
           [],
       features:
           (json['features'] as List<dynamic>?)
-              ?.map((e) => e as String)
+              ?.where((e) => e != null)
+              .map((e) => e.toString())
               .toList() ??
-          [],
-      providerId: json['providerId'] as String? ?? '',
+          ['Service features not specified'],
+      providerId: json['providerId'] as String?,
       isFeatured: json['isFeatured'] as bool? ?? false,
       isPopular: json['isPopular'] as bool? ?? false,
       location: json['location'] is GeoPoint
           ? json['location'] as GeoPoint
           : null,
+      active: json['active'] as bool? ?? true,
     );
   }
 
@@ -71,7 +110,12 @@ class Service {
       'name': name,
       'description': description,
       'price': price,
+      'priceMax': priceMax,
+      'currency': currency,
+      'pricingType': pricingType,
       'categoryId': categoryId,
+      'categoryName': categoryName,
+      'subService': subService,
       'image': image,
       'rating': rating,
       'reviewCount': reviewCount,
@@ -82,6 +126,7 @@ class Service {
       'isFeatured': isFeatured,
       'isPopular': isPopular,
       'location': location,
+      'active': active,
     };
   }
 }

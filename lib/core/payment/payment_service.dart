@@ -1,4 +1,5 @@
-import 'package:flutter/foundation.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 abstract class PaymentProvider {
   Future<PaymentResult> pay({
@@ -97,8 +98,58 @@ class FlutterwavePaymentProvider implements PaymentProvider {
     required String serviceId,
     required Map<String, dynamic> userData,
   }) async {
-    // TODO: Implement Flutterwave payment logic using publicKey and secretKey
-    // Use Flutterwave API or package here
-    return PaymentResult(success: true, transactionId: 'flutterwave_txn_id');
+    try {
+      final Map<String, dynamic> customer = {
+        'email': userData['email'],
+        'phone_number': userData['phoneNumber'],
+        'name': userData['name'],
+      };
+
+      final Map<String, dynamic> customizations = {
+        'title': 'Service Payment',
+        'description': 'Payment for service $serviceId',
+        'logo': 'https://your-logo-url.com/logo.png',
+      };
+
+      final Map<String, dynamic> paymentData = {
+        'tx_ref': 'poafix_${DateTime.now().millisecondsSinceEpoch}',
+        'amount': amount,
+        'currency': currency,
+        'payment_options': 'card,mpesa,ussd',
+        'redirect_url': 'https://your-redirect-url.com/callback',
+        'customer': customer,
+        'customizations': customizations,
+        'meta': {'service_id': serviceId, 'user_id': userData['userId']},
+      };
+
+      final response = await http.post(
+        Uri.parse('https://api.flutterwave.com/v3/payments'),
+        headers: {
+          'Authorization': 'Bearer $secretKey',
+          'Content-Type': 'application/json',
+        },
+        body: json.encode(paymentData),
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        if (responseData['status'] == 'success') {
+          return PaymentResult(
+            success: true,
+            transactionId: responseData['data']['transaction_id'].toString(),
+          );
+        }
+      }
+
+      return PaymentResult(
+        success: false,
+        errorMessage: 'Payment initialization failed',
+      );
+    } catch (e) {
+      return PaymentResult(
+        success: false,
+        errorMessage: 'Error processing payment: ${e.toString()}',
+      );
+    }
   }
 }

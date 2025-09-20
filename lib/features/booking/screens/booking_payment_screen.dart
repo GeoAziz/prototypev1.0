@@ -30,10 +30,7 @@ class BookingPaymentScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Service Details',
-                style: AppTextStyles.headline2,
-              ),
+              Text('Service Details', style: AppTextStyles.headline2),
               const SizedBox(height: 16),
               Card(
                 child: Padding(
@@ -41,10 +38,7 @@ class BookingPaymentScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        serviceTitle,
-                        style: AppTextStyles.headline3,
-                      ),
+                      Text(serviceTitle, style: AppTextStyles.headline3),
                       const SizedBox(height: 8),
                       Text(
                         'Amount: \$${amount.toStringAsFixed(2)}',
@@ -57,10 +51,7 @@ class BookingPaymentScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 32),
-              Text(
-                'Payment Method',
-                style: AppTextStyles.headline2,
-              ),
+              Text('Payment Method', style: AppTextStyles.headline2),
               const SizedBox(height: 16),
               PayPalPaymentButton(
                 amount: amount,

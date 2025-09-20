@@ -11,8 +11,11 @@ class NotificationService {
   NotificationService._internal();
 
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
-  final FlutterLocalNotificationsPlugin _localNotifications = FlutterLocalNotificationsPlugin();
-  final _notificationsCollection = FirebaseFirestore.instance.collection('notifications');
+  final FlutterLocalNotificationsPlugin _localNotifications =
+      FlutterLocalNotificationsPlugin();
+  final _notificationsCollection = FirebaseFirestore.instance.collection(
+    'notifications',
+  );
 
   // Stream controller for in-app notifications
   Stream<List<NotificationModel>> get notificationsStream {
@@ -24,22 +27,20 @@ class NotificationService {
         .orderBy('createdAt', descending: true)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs
-          .map((doc) => NotificationModel.fromMap(doc.data(), doc.id))
-          .toList();
-    });
+          return snapshot.docs
+              .map((doc) => NotificationModel.fromMap(doc.data(), doc.id))
+              .toList();
+        });
   }
 
   Future<void> init() async {
     // Request permission for iOS
-    await _fcm.requestPermission(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
+    await _fcm.requestPermission(alert: true, badge: true, sound: true);
 
     // Initialize local notifications
-    const initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const initializationSettingsAndroid = AndroidInitializationSettings(
+      '@mipmap/ic_launcher',
+    );
     final initializationSettingsIOS = DarwinInitializationSettings(
       requestSoundPermission: false,
       requestBadgePermission: false,
@@ -68,7 +69,7 @@ class NotificationService {
     // Get FCM token
     final token = await _fcm.getToken();
     debugPrint('FCM Token: $token');
-    
+
     // Save token to user document
     if (token != null) {
       await _saveTokenToUser(token);
@@ -81,11 +82,8 @@ class NotificationService {
   Future<void> _saveTokenToUser(String token) async {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .set({
-        'fcmTokens': FieldValue.arrayUnion([token])
+      await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+        'fcmTokens': FieldValue.arrayUnion([token]),
       }, SetOptions(merge: true));
     }
   }
@@ -147,7 +145,9 @@ class NotificationService {
       actionRoute: message.data['route'],
     );
 
-    await _notificationsCollection.doc(notification.id).set(notification.toMap());
+    await _notificationsCollection
+        .doc(notification.id)
+        .set(notification.toMap());
   }
 
   NotificationType _getNotificationTypeFromData(Map<String, dynamic> data) {

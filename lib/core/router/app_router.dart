@@ -1,3 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:poafix/features/provider/screens/provider_main_navigation.dart';
+import 'package:poafix/features/provider/screens/portfolio_screen.dart';
+import 'package:poafix/features/provider/screens/provider_dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:poafix/features/auth/screens/login_screen.dart';
@@ -10,7 +15,6 @@ import 'package:poafix/features/auth/screens/profile_setup_screen.dart';
 import 'package:poafix/features/search/screens/search_screen.dart';
 import 'package:poafix/features/booking/screens/booking_screen.dart';
 import 'package:poafix/features/booking/screens/booking_success_screen.dart';
-import 'package:poafix/features/booking/screens/bookings_screen.dart';
 import 'package:poafix/features/booking/screens/booking_payment_screen.dart';
 import 'package:poafix/features/payment/screens/payment_methods_screen.dart';
 import 'package:poafix/features/payment/screens/payment_processing_screen.dart';
@@ -27,7 +31,6 @@ import 'package:poafix/features/chat/screens/chat_messages_screen.dart';
 import 'package:poafix/features/profile/screens/profile_screen.dart';
 import 'package:poafix/features/service_category/screens/service_category_screen.dart';
 import 'package:poafix/features/service_details/screens/service_details_screen.dart';
-import 'package:poafix/features/service_details/screens/filtering_sort_screen.dart';
 import 'package:poafix/features/service_details/screens/price_comparison_screen.dart';
 import 'package:poafix/features/service_provider/screens/service_provider_list_screen.dart';
 import 'package:poafix/features/settings/screens/settings_screen.dart';
@@ -43,6 +46,15 @@ import 'package:poafix/features/featured_services/screens/featured_services_scre
 import 'package:poafix/features/popular_services/screens/popular_services_screen.dart';
 import 'package:poafix/features/auth/screens/auth_screen.dart';
 import 'package:poafix/features/provider/provider_screen.dart';
+import 'package:poafix/features/provider/screens/service_edit_screen.dart';
+import 'package:poafix/features/provider/screens/service_list_screen.dart';
+import 'package:poafix/features/service_category/screens/sub_service_list_screen.dart';
+import 'package:poafix/features/provider/screens/provider_selection_screen.dart';
+import 'package:poafix/features/service_comparison/screens/service_comparison_screen.dart';
+import 'package:poafix/features/smart_filtering/screens/smart_filtering_screen.dart';
+import 'package:poafix/features/smart_filtering/models/filter_criteria.dart';
+import 'package:poafix/features/map/screens/map_screen.dart';
+import 'package:poafix/features/services/screens/services_screen.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(
   debugLabel: 'root',
@@ -53,9 +65,95 @@ final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>(
 
 class AppRouter {
   static final GoRouter router = GoRouter(
-    initialLocation: '/',
+    initialLocation: '/login',
     navigatorKey: _rootNavigatorKey,
+    redirect: (context, state) async {
+      final user = FirebaseAuth.instance.currentUser;
+      final allowedUnauthRoutes = ['/login', '/register', '/forgot-password'];
+      final isAllowedUnauth = allowedUnauthRoutes.contains(
+        state.matchedLocation,
+      );
+
+      if (user == null) {
+        // Allow unauthenticated access to login, register, forgot-password
+        return isAllowedUnauth ? null : '/login';
+      }
+
+      // If logged in and on login/register/forgot-password, redirect to correct home based on role
+      if (isAllowedUnauth) {
+        // Fetch user role from Firestore
+        final doc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .get();
+        final role = doc.data()?['role']?.toString();
+        if (role == 'UserRole.provider' || role == 'provider') {
+          return '/providerHome';
+        } else {
+          return '/';
+        }
+      }
+
+      // If on root '/', redirect to providerHome if provider
+      if (state.matchedLocation == '/') {
+        final doc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .get();
+        final role = doc.data()?['role']?.toString();
+        if (role == 'UserRole.provider' || role == 'provider') {
+          return '/providerHome';
+        }
+      }
+
+      return null;
+    },
     routes: [
+      GoRoute(
+        path: '/providerHome',
+        name: 'providerHome',
+        builder: (context, state) =>
+            ProviderMainNavigation(child: ProviderDashboardScreen()),
+        routes: [
+          GoRoute(
+            path: 'portfolio',
+            name: 'providerPortfolio',
+            builder: (context, state) => PortfolioScreen(),
+          ),
+          GoRoute(
+            path: 'services',
+            builder: (context, state) => const ServiceListScreen(),
+          ),
+          GoRoute(
+            path: 'service/edit/:serviceId',
+            name: 'editService',
+            builder: (context, state) {
+              final serviceId = state.pathParameters['serviceId'];
+              return ServiceEditScreen(serviceId: serviceId);
+            },
+          ),
+          GoRoute(
+            path: 'service/add',
+            name: 'addService',
+            builder: (context, state) => const ServiceEditScreen(),
+          ),
+          GoRoute(
+            path: 'settings',
+            name: 'providerSettings',
+            builder: (context, state) => const SettingsScreen(),
+          ),
+          GoRoute(
+            path: 'notifications',
+            name: 'providerNotifications',
+            builder: (context, state) => const NotificationsScreen(),
+          ),
+          GoRoute(
+            path: 'help',
+            name: 'providerHelp',
+            builder: (context, state) => HelpSupportScreen(),
+          ),
+        ],
+      ),
       // Auth routes
       GoRoute(
         path: '/login',
@@ -149,12 +247,28 @@ class AppRouter {
                 NoTransitionPage(child: const HomeScreen()),
           ),
 
+          // Map tab
+          GoRoute(
+            path: '/map',
+            name: 'map',
+            pageBuilder: (context, state) =>
+                NoTransitionPage(child: const MapScreen()),
+          ),
+
+          // Services tab
+          GoRoute(
+            path: '/services',
+            name: 'services',
+            pageBuilder: (context, state) =>
+                NoTransitionPage(child: const ServicesScreen()),
+          ),
+
           // Bookings tab
           GoRoute(
             path: '/bookings',
             name: 'bookings',
             pageBuilder: (context, state) =>
-                NoTransitionPage(child: const BookingsScreen()),
+                NoTransitionPage(child: const BookingHistoryScreen()),
           ),
 
           // Profile tab
@@ -167,13 +281,69 @@ class AppRouter {
         ],
       ),
 
-      // Service category screen
+      // Service category and sub-services screens
       GoRoute(
         path: '/categories/:categoryId',
         name: 'serviceCategory',
         builder: (context, state) {
           final categoryId = state.pathParameters['categoryId'] as String;
-          return ServiceCategoryScreen(categoryId: categoryId);
+          final subService = state.uri.queryParameters['subService'];
+          return ServiceCategoryScreen(
+            categoryId: categoryId,
+            subService: subService,
+          );
+        },
+        routes: [
+          // Sub-service specific route
+          GoRoute(
+            path: 'sub-services/:subServiceId',
+            name: 'subServiceList',
+            builder: (context, state) {
+              final categoryId = state.pathParameters['categoryId'] as String;
+              final subServiceId =
+                  state.pathParameters['subServiceId'] as String;
+              final extra = state.extra as Map<String, dynamic>? ?? {};
+              return SubServiceListScreen(
+                categoryId: categoryId,
+                subServiceId: subServiceId,
+                categoryName: extra['categoryName'] as String? ?? '',
+                subServiceName:
+                    extra['subServiceName'] as String? ?? subServiceId,
+              );
+            },
+          ),
+        ],
+      ),
+
+      // Provider selection for specific service
+      GoRoute(
+        path: '/service/:serviceId/providers',
+        name: 'providerSelection',
+        builder: (context, state) {
+          final serviceId = state.pathParameters['serviceId'] as String;
+          return ProviderSelectionScreen(serviceId: serviceId);
+        },
+      ),
+
+      // Service comparison screen
+      GoRoute(
+        path: '/compare',
+        name: 'serviceComparison',
+        builder: (context, state) {
+          final serviceIds = state.extra as List<String>? ?? [];
+          return ServiceComparisonScreen(serviceIds: serviceIds);
+        },
+      ),
+
+      // Smart filtering screen
+      GoRoute(
+        path: '/smart-filters',
+        name: 'smartFiltering',
+        builder: (context, state) {
+          final initialCriteria = state.extra;
+          return SmartFilteringScreen(
+            initialCriteria: initialCriteria as FilterCriteria?,
+          );
         },
       ),
       // Service search results screen
@@ -182,12 +352,6 @@ class AppRouter {
         name: 'search',
         builder: (context, state) =>
             SearchScreen(initialQuery: state.extra as String? ?? ''),
-      ),
-      // Filtering & sort interface
-      GoRoute(
-        path: '/filtering-sort',
-        name: 'filteringSort',
-        builder: (context, state) => FilteringSortScreen(),
       ),
       // Price comparison screen
       GoRoute(
@@ -204,7 +368,7 @@ class AppRouter {
 
       // Service detail screen
       GoRoute(
-        path: '/services/:serviceId',
+        path: '/service/:serviceId',
         name: 'serviceDetails',
         builder: (context, state) {
           final serviceId = state.pathParameters['serviceId'] as String;
@@ -352,7 +516,15 @@ class AppRouter {
       GoRoute(
         path: '/chat',
         name: 'chatMessages',
-        builder: (context, state) => ChatMessagesScreen(),
+        builder: (context, state) {
+          final args = state.extra as Map<String, dynamic>? ?? {};
+          final receiverId = args['receiverId'] as String? ?? '';
+          final receiverName = args['receiverName'] as String? ?? '';
+          return ChatMessagesScreen(
+            receiverId: receiverId,
+            receiverName: receiverName,
+          );
+        },
       ),
 
       // Settings screen
@@ -364,7 +536,7 @@ class AppRouter {
 
       // Service reviews screen
       GoRoute(
-        path: '/services/:serviceId/reviews',
+        path: '/service/:serviceId/reviews',
         name: 'serviceReviews',
         builder: (context, state) {
           final serviceId = state.pathParameters['serviceId'] as String;

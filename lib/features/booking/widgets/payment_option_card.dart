@@ -35,11 +35,8 @@ class PaymentOptionCard extends StatelessWidget {
                   icon,
                   width: 48,
                   height: 48,
-                  errorBuilder: (context, error, stackTrace) => const Icon(
-                    Icons.payment,
-                    size: 48,
-                    color: Colors.grey,
-                  ),
+                  errorBuilder: (context, error, stackTrace) =>
+                      const Icon(Icons.payment, size: 48, color: Colors.grey),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
@@ -56,10 +53,7 @@ class PaymentOptionCard extends StatelessWidget {
                       const SizedBox(height: 4),
                       Text(
                         subtitle,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[600],
-                        ),
+                        style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                       ),
                     ],
                   ),

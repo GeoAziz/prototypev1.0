@@ -50,3 +50,6 @@ android/app/google-services.json
 
 # VS Code settings (optional, uncomment if you want to ignore)
 .vscode/
+
+
+serviceAccountKey.json

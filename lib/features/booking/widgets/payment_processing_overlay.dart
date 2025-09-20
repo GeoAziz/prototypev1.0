@@ -38,11 +38,14 @@ class PaymentProcessingOverlay extends StatelessWidget {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                if (state == PaymentState.success || state == PaymentState.failure) ...[
+                if (state == PaymentState.success ||
+                    state == PaymentState.failure) ...[
                   const SizedBox(height: 24),
                   ElevatedButton(
                     onPressed: onClose,
-                    child: Text(state == PaymentState.success ? 'Continue' : 'Try Again'),
+                    child: Text(
+                      state == PaymentState.success ? 'Continue' : 'Try Again',
+                    ),
                   ),
                 ],
               ],

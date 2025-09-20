@@ -107,7 +107,9 @@ class PayPalPaymentService implements PaymentProvider {
             ];
 
             if (!allowedDomains.contains(uri.host)) {
-              debugPrint('[PayPal] ❌ Blocked navigation to untrusted domain: ${uri.host}');
+              debugPrint(
+                '[PayPal] ❌ Blocked navigation to untrusted domain: ${uri.host}',
+              );
               return NavigationDecision.prevent;
             }
 
@@ -201,7 +203,9 @@ class PayPalPaymentService implements PaymentProvider {
                       context: context,
                       builder: (context) => AlertDialog(
                         title: const Text('Cancel Payment?'),
-                        content: const Text('Are you sure you want to cancel this payment?'),
+                        content: const Text(
+                          'Are you sure you want to cancel this payment?',
+                        ),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.pop(context),
@@ -231,11 +235,13 @@ class PayPalPaymentService implements PaymentProvider {
                       builder: (context, setState) {
                         controller.setNavigationDelegate(
                           NavigationDelegate(
-                            onPageStarted: (_) => setState(() => isLoading = true),
-                            onPageFinished: (_) => setState(() => isLoading = false),
+                            onPageStarted: (_) =>
+                                setState(() => isLoading = true),
+                            onPageFinished: (_) =>
+                                setState(() => isLoading = false),
                           ),
                         );
-                        
+
                         return isLoading
                             ? const Center(child: CircularProgressIndicator())
                             : const SizedBox.shrink();

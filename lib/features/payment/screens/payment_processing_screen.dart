@@ -62,24 +62,30 @@ class _PaymentProcessingScreenState extends State<PaymentProcessingScreen> {
                       onPaymentComplete: (bool success) async {
                         if (success) {
                           setState(() => _isSuccess = true);
-                          
+
                           try {
                             final user = FirebaseAuth.instance.currentUser;
-                            if (user == null) throw Exception('User not authenticated');
+                            if (user == null)
+                              throw Exception('User not authenticated');
 
-                            await FirebaseFirestore.instance.collection('payments').add({
-                              'userId': user.uid,
-                              'serviceId': widget.serviceId,
-                              'amount': widget.amount,
-                              'paymentMethod': 'paypal',
-                              'status': 'completed',
-                              'timestamp': FieldValue.serverTimestamp(),
-                            });
+                            await FirebaseFirestore.instance
+                                .collection('payments')
+                                .add({
+                                  'userId': user.uid,
+                                  'serviceId': widget.serviceId,
+                                  'amount': widget.amount,
+                                  'paymentMethod': 'paypal',
+                                  'status': 'completed',
+                                  'timestamp': FieldValue.serverTimestamp(),
+                                });
 
                             if (mounted) {
                               context.pushNamed(
                                 'bookingSuccess',
-                                extra: {'amount': widget.amount.toString(), 'serviceId': widget.serviceId},
+                                extra: {
+                                  'amount': widget.amount.toString(),
+                                  'serviceId': widget.serviceId,
+                                },
                               );
                             }
                           } catch (e) {
@@ -91,7 +97,8 @@ class _PaymentProcessingScreenState extends State<PaymentProcessingScreen> {
                         } else {
                           setState(() {
                             _isError = true;
-                            _errorMessage = 'Payment was not completed successfully.';
+                            _errorMessage =
+                                'Payment was not completed successfully.';
                           });
                         }
                       },

@@ -1,6 +1,41 @@
-# fresh_flutter_project
+# Fresh Flutter Project
 
-A new Flutter project.
+## Features
+- Provider repository and data layer
+- Advanced filtering and specialization system
+- Enhanced provider cards and UI/UX improvements
+- Availability management and real-time updates
+- Review and rating system
+- Service comparison and metrics
+- Booking history
+- Communication system (messaging)
+- Package deals
+- Comprehensive error handling
+- Unit tests for models
+
+## Usage
+- Run `flutter pub get` to install dependencies
+- Use Riverpod for state management
+- All features are modular and can be extended
+
+## Directory Structure
+- `lib/features/provider/models/` - Data models
+- `lib/features/provider/repositories/` - Data repositories
+- `lib/features/provider/providers/` - Riverpod providers
+- `lib/features/provider/widgets/` - UI components
+- `test/` - Unit tests
+
+## Testing
+Run all tests:
+```
+flutter test
+```
+
+## Error Handling
+Global error handler in `lib/core/error/`
+
+## Contribution
+Feel free to extend features and add more tests.
 
 ## Getting Started
 

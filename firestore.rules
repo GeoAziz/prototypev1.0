@@ -1,7 +1,37 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    // Portfolio items: only owner can write, anyone authenticated can read
+    match /portfolio_items/{itemId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.resource.data.userId == request.auth.uid;
+    }
+    // Services: only owner (provider) can write, anyone authenticated can read
+    match /services/{serviceId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.resource.data.providerId == request.auth.uid;
+    }
+    // Providers: only owner can write, anyone authenticated can read
+    match /providers/{providerId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == providerId;
+    }
+    // Users: only owner can write, anyone authenticated can read
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+    // Default fallback: authenticated users can read, but not write
     match /{document=**} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
+  }
+}
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /service_images/{allImages=**} {
       allow read, write: if request.auth != null;
     }
   }

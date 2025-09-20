@@ -1,10 +1,16 @@
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:poafix/core/models/service.dart';
+import 'package:poafix/core/models/service_query_result.dart';
 import 'package:poafix/core/services/base_service.dart';
+import 'package:poafix/core/utils/logger.dart';
 
 class ServiceService extends BaseService {
-  ServiceService({super.firestore});
+  ServiceService({super.firestore}) {
+    _logger = Logger('ServiceService');
+  }
+
+  late final Logger _logger;
 
   // Validate required fields for a service
   bool _validateServiceData(Map<String, dynamic> data, String docId) {
@@ -17,9 +23,10 @@ class ServiceService extends BaseService {
       'rating': 'num',
       'reviewCount': 'int',
       'bookingCount': 'int',
-      'images': 'List<String>',
       'features': 'List<String>',
-      'providerId': 'String',
+      // Optional fields
+      // 'images': 'List<String>',
+      // 'providerId': 'String',
     };
 
     for (var field in requiredFields.entries) {
@@ -53,13 +60,24 @@ class ServiceService extends BaseService {
           }
           break;
         case 'List<String>':
-          if (data[field.key] == null || data[field.key] is! List) {
+          final value = data[field.key];
+          if (value == null) {
+            // If list is null, we'll let the model handle it with defaults
+            return true;
+          }
+          if (value is! List) {
             print('Skipping service doc $docId: ${field.key} must be a List');
             return false;
           }
-          if (!(data[field.key] as List).every((item) => item is String)) {
+          // Allow empty lists - the model will handle defaults
+          if (value.isEmpty) {
+            return true;
+          }
+          if (!value.every(
+            (item) => item != null && item.toString().isNotEmpty,
+          )) {
             print(
-              'Skipping service doc $docId: ${field.key} must contain only strings',
+              'Skipping service doc $docId: ${field.key} contains null or empty values',
             );
             return false;
           }
@@ -71,7 +89,7 @@ class ServiceService extends BaseService {
   }
 
   // Get services with filtering, search, sorting, and pagination
-  Future<List<Service>> getServices({
+  Future<ServiceQueryResult> getServices({
     String? categoryId,
     bool? isFeatured,
     bool? isPopular,
@@ -141,7 +159,7 @@ class ServiceService extends BaseService {
       }
 
       final snapshot = await query.get();
-      return snapshot.docs
+      final services = snapshot.docs
           .where((doc) {
             final data = doc.data();
             return _validateServiceData(data, doc.id);
@@ -152,10 +170,16 @@ class ServiceService extends BaseService {
             return Service.fromJson(data);
           })
           .toList();
+
+      return ServiceQueryResult(
+        services: services,
+        lastDocument: services.isEmpty ? null : snapshot.docs.last,
+        hasMore: services.length >= (limit ?? 10),
+      );
     });
   }
 
-  // Get a single service by ID
+  // Get a single service by ID with provider data
   Future<Service?> getServiceById(String id) {
     return handleServiceCall(() async {
       final doc = await firestore.collection('services').doc(id).get();
@@ -166,6 +190,23 @@ class ServiceService extends BaseService {
         return null;
       }
 
+      // Get provider data
+      final providerId = data['providerId'] as String?;
+      if (providerId != null && providerId.isNotEmpty) {
+        final providerDoc = await firestore
+            .collection('providers')
+            .doc(data['providerId'] as String)
+            .get();
+
+        if (providerDoc.exists) {
+          final providerData = providerDoc.data()!;
+          data['location'] = providerData['location'];
+          data['providerName'] = providerData['businessName'];
+          data['providerRating'] = providerData['rating'];
+          data['providerReviewCount'] = providerData['reviewCount'];
+        }
+      }
+
       data['id'] = doc.id;
       return Service.fromJson(data);
     });
@@ -173,6 +214,7 @@ class ServiceService extends BaseService {
 
   // Stream services with real-time updates
   Stream<List<Service>> streamServices({
+    String? providerId,
     String? categoryId,
     bool? isFeatured,
     bool? isPopular,
@@ -180,61 +222,120 @@ class ServiceService extends BaseService {
     bool descending = true,
     int? limit,
   }) {
+    _logger.debug(
+      'Streaming services with filters: categoryId=$categoryId, providerId=$providerId, '
+      'isFeatured=$isFeatured, isPopular=$isPopular, sortBy=$sortBy',
+    );
+    Query<Map<String, dynamic>> query = firestore.collection('services');
+
+    // Apply filters
+    if (providerId != null && providerId.isNotEmpty) {
+      query = query.where('providerId', isEqualTo: providerId);
+    }
+    if (categoryId != null) {
+      query = query.where('categoryId', isEqualTo: categoryId);
+    }
+    if (isFeatured != null) {
+      query = query.where('isFeatured', isEqualTo: isFeatured);
+    }
+    if (isPopular != null) {
+      query = query.where('isPopular', isEqualTo: isPopular);
+    }
+
+    // Apply sorting if needed
+    switch (sortBy) {
+      case 'price':
+        query = query.orderBy('price', descending: descending);
+        break;
+      case 'rating':
+        query = query.orderBy('rating', descending: true);
+        break;
+      case 'popularity':
+        query = query.orderBy('bookingCount', descending: true);
+        break;
+    }
+
+    // Apply limit if specified
+    if (limit != null) {
+      query = query.limit(limit);
+    }
+
     return handleServiceStream(
-      firestore.collection('services').snapshots().map((snapshot) {
-        var services = snapshot.docs
-            .where((doc) {
-              final data = doc.data();
-              return _validateServiceData(data, doc.id);
-            })
-            .map((doc) {
-              final data = doc.data();
-              data['id'] = doc.id;
-              return Service.fromJson(data);
-            })
-            .toList();
+      query.snapshots().asyncMap((snapshot) async {
+        final validDocs = snapshot.docs.where((doc) {
+          final data = doc.data();
+          return _validateServiceData(data, doc.id);
+        }).toList();
 
-        if (categoryId != null) {
-          services = services.where((s) => s.categoryId == categoryId).toList();
-        }
-        if (isFeatured != null) {
-          services = services.where((s) => s.isFeatured == isFeatured).toList();
-        }
-        if (isPopular != null) {
-          services = services.where((s) => s.isPopular == isPopular).toList();
-        }
+        // Get provider data for all services in parallel
+        final providerIds = validDocs
+            .map((doc) => doc.data()['providerId'] as String?)
+            .where((id) => id != null)
+            .toSet();
 
-        // Apply sorting
-        if (sortBy != null) {
-          switch (sortBy) {
-            case 'price':
-              services.sort(
-                (a, b) => descending
-                    ? b.price.compareTo(a.price)
-                    : a.price.compareTo(b.price),
-              );
-              break;
-            case 'rating':
-              services.sort((a, b) => b.rating.compareTo(a.rating));
-              break;
-            case 'popularity':
-              services.sort((a, b) => b.bookingCount.compareTo(a.bookingCount));
-              break;
-            default:
-            // No default sorting
+        final providerDocs = await Future.wait(
+          providerIds.map(
+            (id) => firestore.collection('providers').doc(id!).get(),
+          ),
+        );
+
+        final providerDataMap = Map.fromEntries(
+          providerDocs
+              .where((doc) => doc.exists)
+              .map((doc) => MapEntry(doc.id, doc.data()!)),
+        );
+
+        // Combine service data with provider data
+        final services = validDocs.map((doc) {
+          final data = doc.data();
+          data['id'] = doc.id;
+
+          final providerId = data['providerId'] as String?;
+          if (providerId != null && providerDataMap.containsKey(providerId)) {
+            final providerData = providerDataMap[providerId]!;
+            data['location'] = providerData['location'];
+            data['providerName'] = providerData['businessName'];
+            data['providerRating'] = providerData['rating'];
+            data['providerReviewCount'] = providerData['reviewCount'];
           }
-        }
 
-        if (limit != null && services.length > limit) {
-          services = services.take(limit).toList();
-        }
+          return Service.fromJson(data);
+        }).toList();
+
+        _logger.info(
+          'Streamed ${services.length} services with categoryId=$categoryId',
+        );
 
         return services;
       }),
     );
   }
 
-  // Get services near a location
+  // Add a new service
+  Future<String> addService(Service service) {
+    return handleServiceCall(() async {
+      final docRef = await firestore
+          .collection('services')
+          .add(service.toJson());
+      return docRef.id;
+    });
+  }
+
+  // Update an existing service
+  Future<void> updateService(String id, Map<String, dynamic> updates) {
+    return handleServiceCall(() async {
+      await firestore.collection('services').doc(id).update(updates);
+    });
+  }
+
+  // Delete a service
+  Future<void> deleteService(String id) {
+    return handleServiceCall(() async {
+      await firestore.collection('services').doc(id).delete();
+    });
+  }
+
+  // Get services near a location using provider locations
   Future<List<Service>> getNearbyServices({
     required GeoPoint location,
     required double radiusInKm,
@@ -242,18 +343,40 @@ class ServiceService extends BaseService {
     int? limit,
   }) {
     return handleServiceCall(() async {
-      // Calculate rough bounding box for initial filtering
+      // Find providers within radius first
       final lat = location.latitude;
       final lon = location.longitude;
       final latChange = radiusInKm / 111.32; // 1 degree = 111.32 km
       final lonChange = radiusInKm / (111.32 * cos(lat * pi / 180));
 
+      var providerQuery = firestore
+          .collection('providers')
+          .where('location.latitude', isGreaterThan: lat - latChange)
+          .where('location.latitude', isLessThan: lat + latChange);
+
+      final providerDocs = await providerQuery.get();
+      final nearbyProviderIds = providerDocs.docs
+          .where((doc) {
+            final location = doc.data()['location'] as GeoPoint?;
+            if (location == null) return false;
+
+            final distance = _calculateDistance(
+              lat,
+              lon,
+              location.latitude,
+              location.longitude,
+            );
+            return distance <= radiusInKm;
+          })
+          .map((doc) => doc.id)
+          .toList();
+
+      if (nearbyProviderIds.isEmpty) return [];
+
+      // Get services from nearby providers
       var query = firestore
           .collection('services')
-          .where('location.latitude', isGreaterThan: lat - latChange)
-          .where('location.latitude', isLessThan: lat + latChange)
-          .where('location.longitude', isGreaterThan: lon - lonChange)
-          .where('location.longitude', isLessThan: lon + lonChange);
+          .where('providerId', whereIn: nearbyProviderIds);
 
       if (categoryId != null) {
         query = query.where('categoryId', isEqualTo: categoryId);
@@ -271,6 +394,19 @@ class ServiceService extends BaseService {
           })
           .map((doc) {
             final data = doc.data();
+            final providerId = data['providerId'] as String?;
+            if (providerId != null) {
+              final providerDoc = providerDocs.docs.firstWhere(
+                (d) => d.id == providerId,
+              );
+              if (providerDoc.exists) {
+                final providerData = providerDoc.data();
+                data['location'] = providerData['location'];
+                data['providerName'] = providerData['businessName'];
+                data['providerRating'] = providerData['rating'];
+                data['providerReviewCount'] = providerData['reviewCount'];
+              }
+            }
             data['id'] = doc.id;
             return Service.fromJson(data);
           })
@@ -279,6 +415,7 @@ class ServiceService extends BaseService {
       // Further filter by exact distance
       return services.where((service) {
         if (service.location == null) return false;
+
         final distance = _calculateDistance(
           location.latitude,
           location.longitude,

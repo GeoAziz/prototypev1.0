@@ -74,7 +74,8 @@ class _PayPalPaymentButtonState extends State<PayPalPaymentButton> {
               },
               onNavigationRequest: (NavigationRequest request) {
                 final url = request.url;
-                if (url.contains('paypal.com') || url.startsWith(config['returnUrl'])) {
+                if (url.contains('paypal.com') ||
+                    url.startsWith(config['returnUrl'])) {
                   return NavigationDecision.navigate;
                 }
                 return NavigationDecision.prevent;
@@ -188,10 +189,7 @@ class _PayPalPaymentButtonState extends State<PayPalPaymentButton> {
             height: 200,
           ),
           const SizedBox(height: 16),
-          const Text(
-            'Initializing PayPal...',
-            style: TextStyle(fontSize: 16),
-          ),
+          const Text('Initializing PayPal...', style: TextStyle(fontSize: 16)),
         ],
       );
     }

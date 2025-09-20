@@ -5,6 +5,8 @@ import 'package:poafix/core/theme/app_theme.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:poafix/features/provider/screens/provider_main_navigation.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +20,6 @@ import 'package:poafix/features/notifications/services/notification_service.dart
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-
   // Request location permission at startup
   await _requestLocationPermission();
   try {
@@ -29,15 +30,15 @@ void main() async {
   }
 
   await Firebase.initializeApp();
-  
+
   // Initialize App Check
   await FirebaseAppCheck.instance.activate(
     androidProvider: AndroidProvider.debug,
   );
-  
+
   await AuthService.init(); // Initialize auth service
   DirectPaymentService.init();
-  
+
   // Initialize notification service
   final notificationService = NotificationService();
   await notificationService.initialize();
@@ -52,12 +53,7 @@ void main() async {
     }
   }
 
-  runApp(
-    Provider<FirebaseService>(
-      create: (_) => FirebaseService(),
-      child: const MyApp(),
-    ),
-  );
+  runApp(const AuthGate());
 }
 
 // Request location permission using geolocator
@@ -69,29 +65,97 @@ Future<void> _requestLocationPermission() async {
   // Optionally handle other permission states
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class AuthGate extends StatefulWidget {
+  const AuthGate({super.key});
+
+  @override
+  State<AuthGate> createState() => _AuthGateState();
+}
+
+class _AuthGateState extends State<AuthGate> {
+  bool _loading = true;
+  User? _user;
+  String? _role;
+  String? _targetRoute;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkAuthAndNavigate();
+  }
+
+  Future<void> _checkAuthAndNavigate() async {
+    final user = FirebaseAuth.instance.currentUser;
+    setState(() {
+      _loading = true;
+      _user = user;
+      _role = null;
+      _targetRoute = null;
+    });
+
+    if (user == null) {
+      setState(() {
+        _role = null;
+        _loading = false;
+        _targetRoute = '/login';
+      });
+      return;
+    }
+
+    final doc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .get();
+    final role = doc.data()?['role']?.toString();
+    setState(() {
+      _role = role;
+      _loading = false;
+      if (role == 'UserRole.provider' || role == 'provider') {
+        _targetRoute = '/providerHome';
+      } else {
+        _targetRoute = '/';
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<User?>(
-      stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (context, snapshot) {
-        final isLoggedIn = snapshot.hasData;
-        return MaterialApp.router(
-          title: 'poafix - Home Services',
-          theme: AppTheme.lightTheme,
-          routerConfig: AppRouter.router,
-          debugShowCheckedModeBanner: false,
-          // Redirect to /login if not logged in
-          builder: (context, child) {
-            if (!isLoggedIn) {
-              Future.microtask(() => AppRouter.router.go('/login'));
-            }
-            return child!;
-          },
-        );
-      },
+    if (_loading) {
+      return MaterialApp(
+        title: 'poafix - Home Services',
+        theme: AppTheme.lightTheme,
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          backgroundColor: Colors.white,
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/images/poafix_logo.jpg',
+                  width: 160,
+                  height: 160,
+                  fit: BoxFit.contain,
+                  semanticLabel: 'Poafix Logo',
+                ),
+                const SizedBox(height: 32),
+                const CircularProgressIndicator(),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    // Route based on _targetRoute
+    return MaterialApp.router(
+      title: 'poafix - Home Services',
+      theme: AppTheme.lightTheme,
+      debugShowCheckedModeBanner: false,
+      routerConfig: AppRouter.router,
+      // Use route information to control initial screen
+      // If using go_router, set initialLocation
+      // If not, handle with your router setup
     );
   }
 }

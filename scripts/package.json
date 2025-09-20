@@ -1,0 +1,12 @@
+{
+  "name": "poafix-service-population",
+  "version": "1.0.0",
+  "description": "Service population script for Poafix app",
+  "main": "populate_subservices_comprehensive.js",
+  "scripts": {
+    "populate": "node populate_subservices_comprehensive.js"
+  },
+  "dependencies": {
+    "firebase-admin": "^11.10.1"
+  }
+}
